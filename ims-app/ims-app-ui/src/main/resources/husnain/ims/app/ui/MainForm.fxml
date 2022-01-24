@@ -13,10 +13,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane prefHeight="650.0" prefWidth="1000.0" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="husnain.ims.app.ui.controllers.MainFormController">
    <children>
-      <VBox spacing="24.0" style="-fx-border-color: gray; -fx-border-radius: 24;" AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="48.0" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="48.0">
+      <VBox spacing="24.0" styleClass="main-pane" AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="48.0" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="48.0">
          <children>
             <HBox alignment="CENTER_LEFT">
                <children>
