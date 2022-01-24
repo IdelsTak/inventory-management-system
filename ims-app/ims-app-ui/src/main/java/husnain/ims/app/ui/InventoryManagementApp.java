@@ -1,7 +1,6 @@
 package husnain.ims.app.ui;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
