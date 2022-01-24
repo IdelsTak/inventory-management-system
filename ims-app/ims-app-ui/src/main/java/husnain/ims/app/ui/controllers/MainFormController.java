@@ -76,16 +76,16 @@ public class MainFormController {
         });
     }
 
-    private void initColumnBinding(DoubleExpression widthProp, Stream<Pair<Property, Double>> pairs) {
-        pairs.forEach(p -> this.bindColumnWidth(widthProp, p.getKey(), p.getValue()));
+    private void initColumnBinding(DoubleExpression tableProp, Stream<Pair<Property, Double>> colVals) {
+        colVals.forEach(colVal -> this.bindColumnWidth(tableProp, colVal.getKey(), colVal.getValue()));
     }
 
-    private void bindColumnWidth(DoubleExpression tableProp, Property colProp, double percent) {
+    private void bindColumnWidth(DoubleExpression tableProp, Property colProp, double ratio) {
         if (colProp.isBound()) {
             colProp.unbind();
         }
 
-        colProp.bind(tableProp.multiply(percent));
+        colProp.bind(tableProp.multiply(ratio));
     }
 
 }
