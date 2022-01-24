@@ -86,7 +86,8 @@ public class MainFormController {
 
     private Label createPlaceholder(String details) {
         var lbl = new Label(details);
-        
+        //Give the text a pale shade of gray
+        //Then, increase the text size by a little bit
         lbl.setStyle("-fx-text-fill: #D3D3D3; -fx-font-size: 1.2em");
 
         return lbl;
