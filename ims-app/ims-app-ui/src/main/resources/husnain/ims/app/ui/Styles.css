@@ -3,6 +3,14 @@
     Author     : Husnain Arif
 */
 
+/*A stylized pane with a border that's colored*/
+.main-pane {
+    /*A pale shade of gray */
+    -fx-border-color: #D3D3D3;
+    /*A radius that's approx. 24px*/
+    -fx-border-radius: 2em;
+}
+
 #partIdColumn,
 #assocPartIdColumn,
 #invLevelColumn,
