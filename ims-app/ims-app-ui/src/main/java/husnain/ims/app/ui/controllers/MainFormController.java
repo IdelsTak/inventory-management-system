@@ -55,8 +55,8 @@ public class MainFormController {
     }
 
     private void initTablePlaceholders() {
-        partsTable.setPlaceholder(this.createPlaceholder("<No Parts Available>"));
-        assocPartsTable.setPlaceholder(this.createPlaceholder("<No Associated Parts Available>"));
+        partsTable.setPlaceholder(this.createPlaceholder("<No parts available>"));
+        assocPartsTable.setPlaceholder(this.createPlaceholder("<No associated parts available>"));
     }
 
     private void setupColumnWidths() {
@@ -86,8 +86,8 @@ public class MainFormController {
 
     private Label createPlaceholder(String details) {
         var lbl = new Label(details);
-
-        lbl.setDisable(true);
+        
+        lbl.setStyle("-fx-text-fill: #D3D3D3; -fx-font-size: 1.2em");
 
         return lbl;
     }
