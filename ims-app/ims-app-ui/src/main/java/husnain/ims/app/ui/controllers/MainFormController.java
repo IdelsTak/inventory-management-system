@@ -56,10 +56,10 @@ public class MainFormController {
             this.initColumnBinding(
                     partsTable.widthProperty(),
                     Stream.of(
-                            new Pair(partIdColumn.maxWidthProperty(), 0.15),
-                            new Pair(partNameColumn.maxWidthProperty(), 0.35),
-                            new Pair(invLevelColumn.maxWidthProperty(), 0.25),
-                            new Pair(priceColumn.maxWidthProperty(), 0.25)
+                            new Pair(partIdColumn.maxWidthProperty(), 0.12),
+                            new Pair(partNameColumn.maxWidthProperty(), 0.38),
+                            new Pair(invLevelColumn.maxWidthProperty(), 0.22),
+                            new Pair(priceColumn.maxWidthProperty(), 0.28)
                     )
             );
         });
@@ -67,10 +67,10 @@ public class MainFormController {
             this.initColumnBinding(
                     assocPartsTable.widthProperty(),
                     Stream.of(
-                            new Pair(assocPartIdColumn.maxWidthProperty(), 0.15),
-                            new Pair(assocPartNameColumn.maxWidthProperty(), 0.35),
-                            new Pair(assocInvLevelColumn.maxWidthProperty(), 0.25),
-                            new Pair(assocPriceColumn.maxWidthProperty(), 0.25)
+                            new Pair(assocPartIdColumn.maxWidthProperty(), 0.12),
+                            new Pair(assocPartNameColumn.maxWidthProperty(), 0.38),
+                            new Pair(assocInvLevelColumn.maxWidthProperty(), 0.22),
+                            new Pair(assocPriceColumn.maxWidthProperty(), 0.28)
                     )
             );
         });
