@@ -28,9 +28,31 @@ The values of the filed Inv, therefore, must be integers between the values stor
 
 #### In-house
 
-![add part form - in-house](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/inhouse-add-part-form-screenshot_2022-01-24_17-12-29.png)
+![add part form—in-house](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/inhouse-add-part-form-screenshot_2022-01-24_17-12-29.png)
 
 #### Outsourced
 
-![add part form - outsourced](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/outsourced-add-part-form-screenshot_2022-01-24_17-13-05.png)
+![add part form—outsourced](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/outsourced-add-part-form-screenshot_2022-01-24_17-13-05.png)
+
+### Modify part form
+
+Two views of the same form are shown—one for each of the radio buttons.
+
+The user has the option to select In-House or Outsourced to categorize the part.
+
+If the user selects Outsourced, the Company Name field is available.
+
+If the user selects In-House, the Machine ID field is available.
+
+The Modify Part form has the same functionality as the Add Part form, but the fields are populated with data that was previously entered and saved.
+
+The ID field is still disabled but now displays the selected part’s ID.
+
+#### In-house
+
+![modify part form—in-house](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/inhouse-modify-part-form-screenshot_2022-01-24_17-13-42.png)
+
+#### Outsourced
+
+![modify part form—outsourced](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/outsourced-modify-part-form-screenshot_2022-01-24_17-14-08.png)
 
