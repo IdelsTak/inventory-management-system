@@ -5,8 +5,10 @@ import java.util.stream.Stream;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.Property;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.util.Pair;
 
 /**
@@ -16,34 +18,26 @@ import javafx.util.Pair;
  */
 public class MainFormController {
 
-    private static final Logger LOG = Logger.getLogger(MainFormController.class.getName());
+    @FXML
+    private TextField prodIdTextField;
     @FXML
     private TableColumn<?, ?> assocInvLevelColumn;
-
     @FXML
     private TableColumn<?, ?> assocPartIdColumn;
-
     @FXML
     private TableColumn<?, ?> assocPartNameColumn;
-
     @FXML
     private TableView<?> assocPartsTable;
-
     @FXML
     private TableColumn<?, ?> assocPriceColumn;
-
     @FXML
     private TableColumn<?, ?> invLevelColumn;
-
     @FXML
     private TableColumn<?, ?> partIdColumn;
-
     @FXML
     private TableColumn<?, ?> partNameColumn;
-
     @FXML
     private TableView<?> partsTable;
-
     @FXML
     private TableColumn<?, ?> priceColumn;
 
@@ -52,6 +46,13 @@ public class MainFormController {
      */
     @FXML
     public void initialize() {
+        prodIdTextField.skinProperty().addListener((o) -> {
+            prodIdTextField.requestFocus();
+        });
+        
+        partsTable.setPlaceholder(this.createPlaceholder("<No Parts Available>"));
+        assocPartsTable.setPlaceholder(this.createPlaceholder("<No Associated Parts Available>"));
+
         partsTable.widthProperty().addListener((ov, t, t1) -> {
             this.initColumnBinding(
                     partsTable.widthProperty(),
@@ -74,6 +75,14 @@ public class MainFormController {
                     )
             );
         });
+    }
+
+    private Label createPlaceholder(String details) {
+        var lbl = new Label(details);
+
+        lbl.setDisable(true);
+
+        return lbl;
     }
 
     private void initColumnBinding(DoubleExpression tableProp, Stream<Pair<Property, Double>> colVals) {
