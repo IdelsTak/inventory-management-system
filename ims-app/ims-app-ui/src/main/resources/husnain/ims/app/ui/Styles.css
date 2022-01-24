@@ -1,0 +1,9 @@
+/* 
+    Created on : Jan 24, 2022, 7:32:21 PM
+    Author     : Husnain Arif
+*/
+
+.table-view .column-header-background .nested-column-header .table-column .label .text,
+.table-view .virtual-flow .clipped-container .sheet .table-row-cell .table-column .text {
+    -fx-font-size: 0.85em;
+}
