@@ -4,9 +4,9 @@ package husnain.ims.app.ui;
  *
  * @author Husnain Arif
  */
-public class Launcher {
+public class AppLaunch {
 
     public static void main(String[] args) {
-        App.main(args);
+        InventoryManagementApp.main(args);
     }
 }
