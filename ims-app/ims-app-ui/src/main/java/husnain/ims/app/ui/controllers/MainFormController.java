@@ -1,6 +1,5 @@
 package husnain.ims.app.ui.controllers;
 
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.Property;
@@ -46,13 +45,21 @@ public class MainFormController {
      */
     @FXML
     public void initialize() {
-        prodIdTextField.skinProperty().addListener((o) -> {
-            prodIdTextField.requestFocus();
-        });
-        
+        this.initFocus();
+        this.initTablePlaceholders();
+        this.setupColumnWidths();
+    }
+
+    private void initFocus() {
+        prodIdTextField.skinProperty().addListener((o) -> prodIdTextField.requestFocus());
+    }
+
+    private void initTablePlaceholders() {
         partsTable.setPlaceholder(this.createPlaceholder("<No Parts Available>"));
         assocPartsTable.setPlaceholder(this.createPlaceholder("<No Associated Parts Available>"));
+    }
 
+    private void setupColumnWidths() {
         partsTable.widthProperty().addListener((ov, t, t1) -> {
             this.initColumnBinding(
                     partsTable.widthProperty(),
