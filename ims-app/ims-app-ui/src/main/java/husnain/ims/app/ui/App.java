@@ -21,7 +21,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         Scene scene = null;
-        
+
         try {
             scene = new Scene(this.createParent());
         } catch (IOException ex) {
@@ -38,11 +38,7 @@ public class App extends Application {
     }
 
     private Parent createParent() throws IOException {
-        Parent root = null;
-
-        URL url = this.getClass().getResource("MainForm.fxml");
-
-        return FXMLLoader.load(url);
+        return FXMLLoader.load(this.getClass().getResource("MainForm.fxml"));
     }
 
 }
