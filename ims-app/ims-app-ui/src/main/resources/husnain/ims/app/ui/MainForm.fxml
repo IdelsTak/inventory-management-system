@@ -63,12 +63,12 @@
                      <children>
                         <VBox alignment="TOP_RIGHT" spacing="24.0">
                            <children>
-                              <TableView fx:id="partsTable">
+                              <TableView fx:id="partsTable" minWidth="-Infinity" prefWidth="500.0">
                                 <columns>
-                                  <TableColumn fx:id="partIdColumn" text="Part ID" />
-                                  <TableColumn fx:id="partNameColumn" text="Part Name" />
-                                    <TableColumn fx:id="invLevelColumn" text="Inventory Level" />
-                                    <TableColumn fx:id="priceColumn" text="Price/Cost per Unit" />
+                                  <TableColumn id="partIdColumn" fx:id="partIdColumn" text="Part ID" />
+                                  <TableColumn id="partNameColumn" fx:id="partNameColumn" text="Part Name" />
+                                    <TableColumn id="invLevelColumn" fx:id="invLevelColumn" text="Inventory Level" />
+                                    <TableColumn id="priceColumn" fx:id="priceColumn" text="Price/Cost per Unit" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -79,12 +79,12 @@
                         </VBox>
                         <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" spacing="24.0">
                            <children>
-                              <TableView fx:id="assocPartsTable">
+                              <TableView fx:id="assocPartsTable" minWidth="-Infinity" prefWidth="500.0">
                                  <columns>
-                                    <TableColumn fx:id="assocPartIdColumn" text="Part ID" />
-                                    <TableColumn fx:id="assocPartNameColumn" text="Part Name" />
-                                    <TableColumn fx:id="assocInvLevelColumn" text="Inventory Level" />
-                                    <TableColumn fx:id="assocPriceColumn" text="Price/Cost per Unit" />
+                                    <TableColumn id="assocPartIdColumn" fx:id="assocPartIdColumn" text="Part ID" />
+                                    <TableColumn id="assocPartNameColumn" fx:id="assocPartNameColumn" text="Part Name" />
+                                    <TableColumn id="assocInvLevelColumn" fx:id="assocInvLevelColumn" text="Inventory Level" />
+                                    <TableColumn id="assocPriceColumn" fx:id="assocPriceColumn" text="Price/Cost per Unit" />
                                  </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
