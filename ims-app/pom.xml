@@ -12,5 +12,6 @@
     <description> A JavaFX inventory application system for a small manufacturing organization</description>
     <modules>
         <module>ims-app-ui</module>
+        <module>ims-app-model</module>
     </modules>
 </project>
