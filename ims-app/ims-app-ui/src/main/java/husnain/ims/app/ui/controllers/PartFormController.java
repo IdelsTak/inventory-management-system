@@ -28,6 +28,6 @@ public class PartFormController {
     }
 
     private void initTitle() {
-        titleLabel.setText(String.format("%s Product", type.toString()));
+        titleLabel.setText(String.format("%s Part", type.toString()));
     }
 }
