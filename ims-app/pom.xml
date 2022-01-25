@@ -13,5 +13,6 @@
     <modules>
         <module>ims-app-ui</module>
         <module>ims-app-model</module>
+        <module>ims-app-crud</module>
     </modules>
 </project>
