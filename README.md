@@ -1,7 +1,7 @@
 # Inventory Management System
  A JavaFX inventory application system for a small manufacturing organization
 
-## UML Class diagram
+## UML class diagram
 
 ![uml class diagram](https://github.com/IdelsTak/inventory-management-system/blob/master/UML%20Class%20Diagram.png)
 
