@@ -44,7 +44,7 @@
                               </TableView>
                               <HBox alignment="CENTER_RIGHT" spacing="18.0">
                                  <children>
-                                    <Button mnemonicParsing="false" text="Add" />
+                                    <Button mnemonicParsing="false" onAction="#addPart" text="Add" />
                                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Modify" />
                                     <Button layoutX="53.0" layoutY="10.0" mnemonicParsing="false" text="Delete" />
                                  </children>
