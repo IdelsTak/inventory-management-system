@@ -1,5 +1,6 @@
 package husnain.ims.app.ui.controllers;
 
+import husnain.ims.app.ui.controllers.utils.Named.DialogType;
 import java.util.stream.Stream;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.Property;
@@ -17,6 +18,7 @@ import javafx.util.Pair;
  */
 public class ProductFormController {
 
+    private final DialogType type;
     @FXML
     private Label titleLabel;
     @FXML
@@ -42,14 +44,27 @@ public class ProductFormController {
     @FXML
     private TableColumn<?, ?> priceColumn;
 
+    public ProductFormController() {
+        this(DialogType.ADD);
+    }
+
+    public ProductFormController(DialogType type) {
+        this.type = type;
+    }
+
     /**
      * Initializes the controller class.
      */
     @FXML
     void initialize() {
+        this.initTitle();
         this.initFocus();
         this.initTablePlaceholders();
         this.setupColumnWidths();
+    }
+
+    private void initTitle() {
+        titleLabel.setText(String.format("%s Product", type.toString()));
     }
 
     private void initFocus() {
