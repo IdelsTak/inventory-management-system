@@ -35,8 +35,8 @@
                                  <columns>
                                     <TableColumn id="partIdColumn" fx:id="partIdColumn" text="Part ID" />
                                     <TableColumn id="partNameColumn" fx:id="partNameColumn" text="Part Name" />
-                                    <TableColumn id="invLevelColumn" fx:id="invLevelColumn" text="Inventory Level" />
-                                    <TableColumn id="priceColumn" fx:id="priceColumn" text="Price/Cost per Unit" />
+                                    <TableColumn id="partInvLevelColumn" fx:id="partInvLevelColumn" text="Inventory Level" />
+                                    <TableColumn id="partPriceColumn" fx:id="partPriceColumn" text="Price/Cost per Unit" />
                                  </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -66,12 +66,12 @@
                         </HBox>
                         <VBox maxHeight="1.7976931348623157E308" spacing="24.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <TableView fx:id="partsTable1" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="500.0" VBox.vgrow="ALWAYS">
+                              <TableView fx:id="productsTable" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="500.0" VBox.vgrow="ALWAYS">
                                  <columns>
-                                    <TableColumn id="partIdColumn" fx:id="partIdColumn1" text="Product ID" />
-                                    <TableColumn id="partNameColumn" fx:id="partNameColumn1" text="Product Name" />
-                                    <TableColumn id="invLevelColumn" fx:id="invLevelColumn1" text="Inventory Level" />
-                                    <TableColumn id="priceColumn" fx:id="priceColumn1" text="Price/Cost per Unit" />
+                                    <TableColumn id="productIdColumn" fx:id="productIdColumn" text="Product ID" />
+                                    <TableColumn id="productNameColumn" fx:id="productNameColumn" text="Product Name" />
+                                    <TableColumn id="productInvLevelColumn" fx:id="productInvLevelColumn" text="Inventory Level" />
+                                    <TableColumn id="productPriceColumn" fx:id="productPriceColumn" text="Price/Cost per Unit" />
                                  </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -95,7 +95,7 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT">
                <children>
-                  <Button mnemonicParsing="false" text="Exit" />
+                  <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitApplication" text="Exit" />
                </children>
             </HBox>
          </children>
