@@ -4,4 +4,5 @@ module ims.ui {
     requires javafx.fxml;
     requires javafx.graphics;
     requires javafx.controls;
+    requires java.base;
 }
