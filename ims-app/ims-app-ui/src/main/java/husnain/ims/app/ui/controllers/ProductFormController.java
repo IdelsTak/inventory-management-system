@@ -1,10 +1,9 @@
 package husnain.ims.app.ui.controllers;
 
 import husnain.ims.app.ui.controllers.utils.ColumnWidthTweak;
-import husnain.ims.app.ui.controllers.utils.Named.DialogType;
+import husnain.ims.app.ui.controllers.utils.Named;
 import husnain.ims.app.ui.controllers.utils.PlaceholderLabel;
 import java.util.List;
-import java.util.stream.Stream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -19,7 +18,7 @@ import javafx.util.Pair;
  */
 public class ProductFormController {
 
-    private final DialogType type;
+    private final Named.DialogType type;
     @FXML
     private Label titleLabel;
     @FXML
@@ -46,10 +45,10 @@ public class ProductFormController {
     private TableColumn<?, ?> priceColumn;
 
     public ProductFormController() {
-        this(DialogType.ADD);
+        this(Named.DialogType.ADD);
     }
 
-    public ProductFormController(DialogType type) {
+    public ProductFormController(Named.DialogType type) {
         this.type = type;
     }
 
