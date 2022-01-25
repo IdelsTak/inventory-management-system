@@ -18,6 +18,8 @@ import javafx.util.Pair;
 public class ProductFormController {
 
     @FXML
+    private Label titleLabel;
+    @FXML
     private TextField prodIdTextField;
     @FXML
     private TableColumn<?, ?> assocInvLevelColumn;
@@ -44,7 +46,7 @@ public class ProductFormController {
      * Initializes the controller class.
      */
     @FXML
-    public void initialize() {
+    void initialize() {
         this.initFocus();
         this.initTablePlaceholders();
         this.setupColumnWidths();
