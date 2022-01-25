@@ -1,6 +1,10 @@
 # Inventory Management System
  A JavaFX inventory application system for a small manufacturing organization
 
+## UML Class diagram
+
+
+
 ## User interface
 
 ### Main form
