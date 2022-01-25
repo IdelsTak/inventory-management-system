@@ -53,6 +53,15 @@ public class MainFormController {
     }
 
     @FXML
+    void addPart(ActionEvent event) {
+        try {
+            this.showPartDialog();
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
     void addProduct(ActionEvent event) {
         try {
             this.showProductDialog();
@@ -68,7 +77,7 @@ public class MainFormController {
 
     private void showExitDialog(ActionEvent event) {
         var alert = new Alert(Alert.AlertType.CONFIRMATION, null, ButtonType.YES, ButtonType.NO);
-        
+
         alert.setTitle("Exit");
         alert.setHeaderText("Continue managing inventory?");
 
@@ -93,13 +102,28 @@ public class MainFormController {
         DialogPane dlg = loader.load();
 
         loader.setController(new ProductFormController());
-        
+
         var alert = new Alert(Alert.AlertType.NONE);
         var saveBtn = new ButtonType("Save", ButtonBar.ButtonData.YES);
-        
+
         dlg.getButtonTypes().setAll(saveBtn, ButtonType.CANCEL);
         alert.setDialogPane(dlg);
-        
+
+        alert.showAndWait();
+    }
+
+    private void showPartDialog() throws IOException {
+        var url = InventoryManagementApp.class.getResource("PartForm.fxml");
+        var loader = new FXMLLoader(url);
+
+        DialogPane dlg = loader.load();
+
+        var alert = new Alert(Alert.AlertType.NONE);
+        var saveBtn = new ButtonType("Save", ButtonBar.ButtonData.YES);
+
+        dlg.getButtonTypes().setAll(saveBtn, ButtonType.CANCEL);
+        alert.setDialogPane(dlg);
+
         alert.showAndWait();
     }
 
