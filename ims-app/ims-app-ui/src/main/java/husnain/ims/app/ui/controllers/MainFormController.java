@@ -1,6 +1,7 @@
 package husnain.ims.app.ui.controllers;
 
 import husnain.ims.app.ui.InventoryManagementApp;
+import husnain.ims.app.ui.controllers.utils.Named;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,7 +56,16 @@ public class MainFormController {
     @FXML
     void addPart(ActionEvent event) {
         try {
-            this.showPartDialog();
+            this.showPartDialog(Named.DialogType.ADD);
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    void modifyPart(ActionEvent event) {
+        try {
+            this.showPartDialog(Named.DialogType.MODIFY);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
@@ -64,7 +74,16 @@ public class MainFormController {
     @FXML
     void addProduct(ActionEvent event) {
         try {
-            this.showProductDialog();
+            this.showProductDialog(Named.DialogType.ADD);
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    void modifyProduct(ActionEvent event) {
+        try {
+            this.showProductDialog(Named.DialogType.MODIFY);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
@@ -95,13 +114,13 @@ public class MainFormController {
         return null;
     }
 
-    private void showProductDialog() throws IOException {
+    private void showProductDialog(Named.DialogType type) throws IOException {
         var url = InventoryManagementApp.class.getResource("ProductForm.fxml");
         var loader = new FXMLLoader(url);
 
-        DialogPane dlg = loader.load();
+        loader.setController(new ProductFormController(type));
 
-        loader.setController(new ProductFormController());
+        DialogPane dlg = loader.load();
 
         var alert = new Alert(Alert.AlertType.NONE);
         var saveBtn = new ButtonType("Save", ButtonBar.ButtonData.YES);
@@ -112,9 +131,11 @@ public class MainFormController {
         alert.showAndWait();
     }
 
-    private void showPartDialog() throws IOException {
+    private void showPartDialog(Named.DialogType type) throws IOException {
         var url = InventoryManagementApp.class.getResource("PartForm.fxml");
         var loader = new FXMLLoader(url);
+
+        loader.setController(new PartFormController(type));
 
         DialogPane dlg = loader.load();
 
