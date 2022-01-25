@@ -12,34 +12,46 @@
 }
 
 #partIdColumn,
+#productIdColumn,
 #assocPartIdColumn,
-#invLevelColumn,
+#partInvLevelColumn,
+#productInvLevelColumn,
 #assocInvLevelColumn,
-#priceColumn,
+#partPriceColumn,
+#productPriceColumn,
 #assocPriceColumn,
 #partIdColumn .label,
+#productIdColumn .label,
 #assocPartIdColumn .label,
-#invLevelColumn .label,
+#partInvLevelColumn .label,
+#productInvLevelColumn .label,
 #assocInvLevelColumn .label,
-#priceColumn .label,
+#partPriceColumn .label,
+#productPriceColumn .label,
 #assocPriceColumn .label {
     -fx-alignment: CENTER_RIGHT
 }
 
 #partNameColumn,
+#productNameColumn,
 #assocPartNameColumn,
 #partNameColumn .label,
+#productNameColumn .label,
 #assocPartNameColumn .label {
     -fx-alignment: CENTER_LEFT
 }
 
 #partIdColumn .label,
+#productIdColumn .label,
 #assocPartIdColumn .label,
 #partNameColumn .label,
+#productNameColumn .label,
 #assocPartNameColumn .label,
-#invLevelColumn .label,
+#partInvLevelColumn .label,
+#productInvLevelColumn .label,
 #assocInvLevelColumn .label,
-#priceColumn .label,
+#productPriceColumn .label,
+#partPriceColumn .label,
 #assocPriceColumn .label {
     -fx-padding: 3px;
 }
