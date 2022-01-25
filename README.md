@@ -3,7 +3,7 @@
 
 ## UML Class diagram
 
-
+![uml class diagram](https://github.com/IdelsTak/inventory-management-system/blob/master/UML%20Class%20Diagram.png)
 
 ## User interface
 
