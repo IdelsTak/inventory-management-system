@@ -1,10 +1,14 @@
 package husnain.ims.app.ui.controllers;
 
 import husnain.ims.app.ui.InventoryManagementApp;
+import husnain.ims.app.ui.controllers.utils.ColumnWidthTweak;
 import husnain.ims.app.ui.controllers.utils.Named;
+import husnain.ims.app.ui.controllers.utils.PlaceholderLabel;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +20,7 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 /**
  * FXML Controller class
@@ -51,6 +56,8 @@ public class MainFormController {
      */
     @FXML
     public void initialize() {
+        this.initTablePlaceholders();
+        this.setupColumnWidths();
     }
 
     @FXML
@@ -92,6 +99,35 @@ public class MainFormController {
     @FXML
     void exitApplication(ActionEvent event) {
         this.showExitDialog(event);
+    }
+
+    private void initTablePlaceholders() {
+        partsTable.setPlaceholder(new PlaceholderLabel("<No parts available>"));
+        productsTable.setPlaceholder(new PlaceholderLabel("<No products available>"));
+    }
+    
+    private void setupColumnWidths() {
+        partsTable.widthProperty().addListener(new ColumnWidthTweak(
+                        partsTable.widthProperty(),
+                        List.of(
+                                new Pair(partIdColumn.maxWidthProperty(), 0.12),
+                                new Pair(partNameColumn.maxWidthProperty(), 0.38),
+                                new Pair(partInvLevelColumn.maxWidthProperty(), 0.22),
+                                new Pair(partPriceColumn.maxWidthProperty(), 0.28)
+                        )
+                )
+        );
+
+        productsTable.widthProperty().addListener(new ColumnWidthTweak(
+                        productsTable.widthProperty(),
+                        List.of(
+                                new Pair(productIdColumn.maxWidthProperty(), 0.12),
+                                new Pair(productNameColumn.maxWidthProperty(), 0.38),
+                                new Pair(productInvLevelColumn.maxWidthProperty(), 0.22),
+                                new Pair(productPriceColumn.maxWidthProperty(), 0.28)
+                        )
+                )
+        );
     }
 
     private void showExitDialog(ActionEvent event) {
