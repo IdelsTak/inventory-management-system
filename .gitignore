@@ -24,3 +24,4 @@ hs_err_pid*
 /ims-app/ims-app-ui/target/
 /ims-app/ims-app-model/target/
 /ims-app/ims-app-crud/target/
+/ims-app/target/
