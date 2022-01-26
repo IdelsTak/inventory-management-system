@@ -3,7 +3,7 @@
     Author     : Husnain Arif
 */
 
-/*A stylized pane with a border that's colored*/
+/*A stylized pane with a border that's colored gray*/
 .main-pane {
     /*A pale shade of gray */
     -fx-border-color: #D3D3D3;
