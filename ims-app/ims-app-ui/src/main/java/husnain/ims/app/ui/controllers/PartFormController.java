@@ -21,6 +21,7 @@ import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -139,8 +140,34 @@ public class PartFormController {
         return modifiedPart;
     }
 
+    private final InputError blankNameError = new InputError("Invalid name", "should not be blank");
+    private final InputError blankStockError = new InputError("Invalid inv", "should not be blank");
+    private final InputError blankPriceError = new InputError("Invalid price", "should not be blank");
+    private final InputError blankMaxStockError = new InputError("Invalid max", "should not be blank");
+    private final InputError blankMinStockError = new InputError("Invalid min", "should not be blank");
+
     public Set<InputError> getInputErrors() {
+        this.updateErrors(nameTextField, blankNameError);
+        this.updateErrors(stockTextField, blankStockError);
+        this.updateErrors(priceTextField, blankPriceError);
+        this.updateErrors(maxStockTextField, blankMaxStockError);
+        this.updateErrors(minStockTextField, blankMinStockError);
+
         return Collections.unmodifiableSet(inputErrors);
+    }
+
+    private void updateErrors(TextInputControl textInput, InputError err) {
+        if (isBlankOrNullText(textInput.getText())) {
+            inputErrors.add(err);
+            textInput.getStyleClass().add("input-error");
+        } else if (inputErrors.contains(err)) {
+            inputErrors.remove(err);
+            textInput.getStyleClass().remove("input-error");
+        }
+    }
+
+    private boolean isBlankOrNullText(String text) {
+        return Objects.isNull(text) || text.isBlank();
     }
 
     public void updateErrorText() {
@@ -159,6 +186,12 @@ public class PartFormController {
         this.initTitle();
 
         companyOrMachineIdLabel.textProperty().bind(this.createFieldForProductType());
+
+        nameTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(nameTextField, blankNameError));
+        stockTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(stockTextField, blankStockError));
+        priceTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(priceTextField, blankPriceError));
+        maxStockTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(maxStockTextField, blankMaxStockError));
+        minStockTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(minStockTextField, blankMinStockError));
 
         this.initErrorListening(stockTextField, "\\d+");
         this.initErrorListening(priceTextField, "\\d+|\\d+\\.\\d+");
