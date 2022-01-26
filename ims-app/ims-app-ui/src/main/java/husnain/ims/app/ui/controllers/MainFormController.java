@@ -1,5 +1,6 @@
 package husnain.ims.app.ui.controllers;
 
+import husnain.ims.app.ui.controllers.utils.FormattedPriceCell;
 import husnain.ims.app.crud.Inventory;
 import husnain.ims.app.model.Part;
 import husnain.ims.app.model.Product;
@@ -21,6 +22,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -62,12 +64,13 @@ public class MainFormController {
     public void initialize() {
         this.initTablePlaceholders();
         this.setupColumnWidths();
-        
+
         partIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         partNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         partPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        partPriceColumn.setCellFactory(callBck -> new FormattedPriceCell());
         partInvLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        
+
         partsTable.setItems(Inventory.getAllParts());
     }
 
@@ -116,26 +119,26 @@ public class MainFormController {
         partsTable.setPlaceholder(new PlaceholderLabel("<No parts available>"));
         productsTable.setPlaceholder(new PlaceholderLabel("<No products available>"));
     }
-    
+
     private void setupColumnWidths() {
         partsTable.widthProperty().addListener(new BoundablePropertyRatio(
-                        partsTable.widthProperty(),
-                        List.of(new PropertyRatio(partIdColumn.maxWidthProperty(), 0.11),
-                                new PropertyRatio(partNameColumn.maxWidthProperty(), 0.38),
-                                new PropertyRatio(partInvLevelColumn.maxWidthProperty(), 0.22),
-                                new PropertyRatio(partPriceColumn.maxWidthProperty(), 0.28)
-                        )
+                partsTable.widthProperty(),
+                List.of(new PropertyRatio(partIdColumn.maxWidthProperty(), 0.11),
+                        new PropertyRatio(partNameColumn.maxWidthProperty(), 0.38),
+                        new PropertyRatio(partInvLevelColumn.maxWidthProperty(), 0.22),
+                        new PropertyRatio(partPriceColumn.maxWidthProperty(), 0.28)
                 )
+        )
         );
 
         productsTable.widthProperty().addListener(new BoundablePropertyRatio(
-                        productsTable.widthProperty(),
-                        List.of(new PropertyRatio(productIdColumn.maxWidthProperty(), 0.11),
-                                new PropertyRatio(productNameColumn.maxWidthProperty(), 0.38),
-                                new PropertyRatio(productInvLevelColumn.maxWidthProperty(), 0.22),
-                                new PropertyRatio(productPriceColumn.maxWidthProperty(), 0.28)
-                        )
+                productsTable.widthProperty(),
+                List.of(new PropertyRatio(productIdColumn.maxWidthProperty(), 0.11),
+                        new PropertyRatio(productNameColumn.maxWidthProperty(), 0.38),
+                        new PropertyRatio(productInvLevelColumn.maxWidthProperty(), 0.22),
+                        new PropertyRatio(productPriceColumn.maxWidthProperty(), 0.28)
                 )
+        )
         );
     }
 
@@ -197,5 +200,6 @@ public class MainFormController {
                     Inventory.addPart(controller.getPart());
                 });
     }
+
 
 }
