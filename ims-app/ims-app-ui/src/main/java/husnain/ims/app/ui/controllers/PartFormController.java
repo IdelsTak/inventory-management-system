@@ -1,5 +1,6 @@
 package husnain.ims.app.ui.controllers;
 
+import husnain.ims.app.ui.controllers.utils.ErrorPseudoClassState;
 import husnain.ims.app.crud.utils.IdSequence;
 import husnain.ims.app.model.InHouse;
 import husnain.ims.app.model.OutSourced;
@@ -7,6 +8,8 @@ import husnain.ims.app.model.Part;
 import husnain.ims.app.ui.controllers.utils.Named;
 import java.util.Objects;
 import java.util.logging.Logger;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.css.PseudoClass;
@@ -14,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleGroup;
 
 /**
@@ -64,42 +68,62 @@ public class PartFormController {
     }
 
     public Part getPart() {
-        Part val;
+        Part modifiedPart;
         var name = nameTextField.getText();
         var price = Double.parseDouble(priceTextField.getText());
         var stock = Integer.parseInt(stockTextField.getText());
         var minStock = Integer.parseInt(minStockTextField.getText());
         var maxStock = Integer.parseInt(maxStockTextField.getText());
-        
+
         if (Objects.isNull(part)) {
             var id = IdSequence.getInstance().next();
-            
+
             if (inhouseRadioButton.isSelected()) {
                 var inhouse = new InHouse(id, name, price, stock, minStock, maxStock);
                 var machineId = Integer.parseInt(nameOrMachineIdTextField.getText());
 
                 inhouse.setMachineId(machineId);
 
-                val = inhouse;
+                modifiedPart = inhouse;
             } else {
                 var outSourced = new OutSourced(id, name, price, stock, minStock, maxStock);
 
                 outSourced.setCompanyName(nameOrMachineIdTextField.getText());
 
-                val = outSourced;
+                modifiedPart = outSourced;
             }
         } else {
-            part.setName(name);
-            part.setStock(stock);
-            part.setPrice(price);
-            part.setMax(maxStock);
-            part.setMin(minStock);
-            
-            
-            val = part;
+            if ((part instanceof InHouse) && outsourcedRadioButton.isSelected()) {
+                var outSourced = new OutSourced(part.getId(), name, price, stock, minStock, maxStock);
+
+                outSourced.setCompanyName(nameOrMachineIdTextField.getText());
+
+                modifiedPart = outSourced;
+            } else if ((part instanceof OutSourced) && inhouseRadioButton.isSelected()) {
+                var inhouse = new InHouse(part.getId(), name, price, stock, minStock, maxStock);
+                var machineId = Integer.parseInt(nameOrMachineIdTextField.getText());
+
+                inhouse.setMachineId(machineId);
+
+                modifiedPart = inhouse;
+            } else {
+                part.setName(name);
+                part.setStock(stock);
+                part.setPrice(price);
+                part.setMax(maxStock);
+                part.setMin(minStock);
+
+                if (part instanceof InHouse inHouse) {
+                    inHouse.setMachineId(Integer.parseInt(nameOrMachineIdTextField.getText()));
+                } else {
+                    ((OutSourced) part).setCompanyName(nameOrMachineIdTextField.getText());
+                }
+
+                modifiedPart = part;
+            }
         }
 
-        return val;
+        return modifiedPart;
     }
 
     @FXML
@@ -134,13 +158,8 @@ public class PartFormController {
         }
     }
 
-    private void initErrorListening(TextField fld, String regex) {
-        fld.textProperty().addListener(e -> {
-            fld.pseudoClassStateChanged(
-                    PseudoClass.getPseudoClass("error"),
-                    !fld.getText().isEmpty() && !fld.getText().matches(regex)
-            );
-        });
+    private void initErrorListening(TextInputControl textInput, String regex) {
+        textInput.textProperty().addListener(new ErrorPseudoClassState(textInput, regex));
     }
 
     private void initTitle() {
