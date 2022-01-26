@@ -1,5 +1,6 @@
 package husnain.ims.app.ui.controllers;
 
+import husnain.ims.app.crud.Inventory;
 import husnain.ims.app.model.Part;
 import husnain.ims.app.model.Product;
 import husnain.ims.app.ui.InventoryManagementApp;
@@ -59,6 +60,8 @@ public class MainFormController {
     public void initialize() {
         this.initTablePlaceholders();
         this.setupColumnWidths();
+        
+        partsTable.setItems(Inventory.getAllParts());
     }
 
     @FXML
@@ -170,7 +173,7 @@ public class MainFormController {
         var url = InventoryManagementApp.class.getResource("PartForm.fxml");
         var loader = new FXMLLoader(url);
 
-        loader.setController(new PartFormController(type));
+        loader.setController(new PartFormController());
 
         DialogPane dlg = loader.load();
 
