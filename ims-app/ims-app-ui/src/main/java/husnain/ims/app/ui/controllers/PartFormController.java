@@ -1,5 +1,6 @@
 package husnain.ims.app.ui.controllers;
 
+import husnain.ims.app.ui.controllers.utils.ErrorClassesTracking;
 import husnain.ims.app.ui.controllers.utils.ErrorPseudoClassState;
 import husnain.ims.app.crud.utils.IdSequence;
 import husnain.ims.app.model.InHouse;
@@ -11,6 +12,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.beans.InvalidationListener;
@@ -143,11 +145,15 @@ public class PartFormController {
     }
 
     public void updateErrorText() {
-        errorLabel.setText(
-                inputErrors.stream()
-                        .map(InputError::toString)
-                        .collect(Collectors.joining(System.lineSeparator()))
-        );
+        var text = inputErrors.stream()
+                .map(InputError::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
+
+        text = inputErrors.isEmpty() ? null : String.format("%d Error(s):\n%s", inputErrors.size(), text);
+
+        LOG.log(Level.INFO, "Error text: {0}", text);
+
+        errorLabel.setText(text);
     }
 
     @FXML
@@ -173,17 +179,10 @@ public class PartFormController {
                     : null;
         });
 
-        priceTextField.getPseudoClassStates().addListener((SetChangeListener.Change<? extends PseudoClass> change) -> {
-            var priceError = change.getSet().stream().anyMatch(pc -> Objects.equals("error", pc.getPseudoClassName()));
-            var ie = new InputError("Invalid price", "value should be a number");
-
-            if (priceError) {
-                inputErrors.add(ie);
-            } else if (inputErrors.contains(ie)) {
-                inputErrors.remove(ie);
-            }
-
-        });
+        stockTextField.getPseudoClassStates().addListener(new ErrorClassesTracking("Invalid stock", "value should be a number", inputErrors));
+        priceTextField.getPseudoClassStates().addListener(new ErrorClassesTracking("Invalid price", "value should be a number", inputErrors));
+        maxStockTextField.getPseudoClassStates().addListener(new ErrorClassesTracking("Invalid max stock", "value should be a number", inputErrors));
+        minStockTextField.getPseudoClassStates().addListener(new ErrorClassesTracking("Invalid min stock", "value should be a number", inputErrors));
 
         inputErrors.addListener((SetChangeListener.Change<? extends InputError> change) -> {
             if (change.wasRemoved()) {
@@ -214,11 +213,11 @@ public class PartFormController {
     }
 
     private InvalidationListener initErrorListening(TextInputControl textInput, String regex) {
-        var listener = new ErrorPseudoClassState(textInput, regex);
+        var invListener = new ErrorPseudoClassState(textInput, regex);
 
-        textInput.textProperty().addListener(listener);
+        textInput.textProperty().addListener(invListener);
 
-        return listener;
+        return invListener;
     }
 
     private void initTitle() {
