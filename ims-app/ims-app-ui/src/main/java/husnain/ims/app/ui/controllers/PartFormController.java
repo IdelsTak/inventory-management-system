@@ -1,10 +1,13 @@
 package husnain.ims.app.ui.controllers;
 
+import husnain.ims.app.crud.utils.IdSequence;
 import husnain.ims.app.model.InHouse;
 import husnain.ims.app.model.OutSourced;
 import husnain.ims.app.model.Part;
 import husnain.ims.app.ui.controllers.utils.Named;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.fxml.FXML;
@@ -19,6 +22,7 @@ import javafx.scene.control.ToggleGroup;
  */
 public class PartFormController {
 
+    private static final Logger LOG = Logger.getLogger(PartFormController.class.getName());
     private final Named.DialogType type;
     @FXML
     private Label titleLabel;
@@ -43,7 +47,7 @@ public class PartFormController {
     @FXML
     private TextField stockTextField;
     @FXML
-    private Label companyOrMachineIdTextField;
+    private Label companyOrMachineIdLabel;
     private final Part part;
 
     public PartFormController() {
@@ -60,25 +64,44 @@ public class PartFormController {
     }
 
     public Part getPart() {
+        var id = IdSequence.getInstance().next();
         var name = nameTextField.getText();
         var price = Double.parseDouble(priceTextField.getText());
         var stock = Integer.parseInt(stockTextField.getText());
         var minStock = Integer.parseInt(minStockTextField.getText());
         var maxStock = Integer.parseInt(maxStockTextField.getText());
 
+        Part val;
+
         if (inhouseRadioButton.isSelected()) {
-            new InHouse(0, name, price, stock, minStock, maxStock);
+            var inhouse = new InHouse(id, name, price, stock, minStock, maxStock);
+            var machineId = Integer.parseInt(nameOrMachineIdTextField.getText());
+
+            inhouse.setMachineId(machineId);
+
+            val = inhouse;
         } else {
-            new OutSourced(0, name, price, stock, minStock, maxStock);
+            var outSourced = new OutSourced(id, name, price, stock, minStock, maxStock);
+
+            outSourced.setCompanyName(nameOrMachineIdTextField.getText());
+
+            val = outSourced;
         }
-        return part;
+
+        return val;
     }
 
     @FXML
     void initialize() {
         this.initTitle();
 
-        companyOrMachineIdTextField.textProperty().bind(this.createFieldForProductType());
+        companyOrMachineIdLabel.textProperty().bind(this.createFieldForProductType());
+
+        if (Objects.isNull(part)) {
+            idTextField.setText("Auto Gen - Disabled");
+        } else {
+
+        }
     }
 
     private void initTitle() {
