@@ -79,7 +79,7 @@ public class ProductFormController {
     private void setupColumnWidths() {
         partsTable.widthProperty().addListener(new BoundablePropertyRatio(
                         partsTable.widthProperty(),
-                        List.of(new PropertyRatio(partIdColumn.maxWidthProperty(), 0.12),
+                        List.of(new PropertyRatio(partIdColumn.maxWidthProperty(), 0.11),
                                 new PropertyRatio(partNameColumn.maxWidthProperty(), 0.38),
                                 new PropertyRatio(invLevelColumn.maxWidthProperty(), 0.22),
                                 new PropertyRatio(priceColumn.maxWidthProperty(), 0.28)
@@ -89,7 +89,7 @@ public class ProductFormController {
 
         assocPartsTable.widthProperty().addListener(new BoundablePropertyRatio(
                         assocPartsTable.widthProperty(),
-                        List.of(new PropertyRatio(assocPartIdColumn.maxWidthProperty(), 0.12),
+                        List.of(new PropertyRatio(assocPartIdColumn.maxWidthProperty(), 0.11),
                                 new PropertyRatio(assocPartNameColumn.maxWidthProperty(), 0.38),
                                 new PropertyRatio(assocInvLevelColumn.maxWidthProperty(), 0.22),
                                 new PropertyRatio(assocPriceColumn.maxWidthProperty(), 0.28)
