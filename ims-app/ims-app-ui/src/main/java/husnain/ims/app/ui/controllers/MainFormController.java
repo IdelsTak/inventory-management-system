@@ -1,5 +1,7 @@
 package husnain.ims.app.ui.controllers;
 
+import husnain.ims.app.model.Part;
+import husnain.ims.app.model.Product;
 import husnain.ims.app.ui.InventoryManagementApp;
 import husnain.ims.app.ui.controllers.utils.PropertyRatio;
 import husnain.ims.app.ui.controllers.utils.BoundablePropertyRatio;
@@ -30,25 +32,25 @@ public class MainFormController {
 
     private static final Logger LOG = Logger.getLogger(MainFormController.class.getName());
     @FXML
-    private TableView<?> partsTable;
+    private TableView<Part> partsTable;
     @FXML
-    private TableColumn<?, ?> partIdColumn;
+    private TableColumn<Part, Integer> partIdColumn;
     @FXML
-    private TableColumn<?, ?> partInvLevelColumn;
+    private TableColumn<Part, String> partNameColumn;
     @FXML
-    private TableColumn<?, ?> partNameColumn;
+    private TableColumn<Part, Double> partPriceColumn;
     @FXML
-    private TableColumn<?, ?> partPriceColumn;
+    private TableColumn<Part, Integer> partInvLevelColumn;
     @FXML
-    private TableView<?> productsTable;
+    private TableView<Product> productsTable;
     @FXML
-    private TableColumn<?, ?> productIdColumn;
+    private TableColumn<Product, Integer> productIdColumn;
     @FXML
-    private TableColumn<?, ?> productInvLevelColumn;
+    private TableColumn<Product, String> productNameColumn;
     @FXML
-    private TableColumn<?, ?> productNameColumn;
+    private TableColumn<Product, Double> productPriceColumn;
     @FXML
-    private TableColumn<?, ?> productPriceColumn;
+    private TableColumn<Product, Integer> productInvLevelColumn;
 
     /**
      * Initializes the controller class.
