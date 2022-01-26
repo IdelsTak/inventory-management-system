@@ -11,9 +11,13 @@ public class IdSequence {
     private int nextId;
     private int lastUpdated;
 
-    public IdSequence() {
+    private IdSequence() {
         nextId = 1;
         lastUpdated = Instant.now().getNano();
+    }
+
+    public static IdSequence getInstance() {
+        return IdSequenceHolder.INSTANCE;
     }
 
     public synchronized int next() {
@@ -32,4 +36,8 @@ public class IdSequence {
         return id;
     }
 
+    private static class IdSequenceHolder {
+
+        private static final IdSequence INSTANCE = new IdSequence();
+    }
 }
