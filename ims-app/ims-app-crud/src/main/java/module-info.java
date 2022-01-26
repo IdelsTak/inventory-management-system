@@ -4,4 +4,5 @@ module ims.crud {
     requires javafx.base;
     
     exports husnain.ims.app.crud;
+    exports husnain.ims.app.crud.utils;
 }
