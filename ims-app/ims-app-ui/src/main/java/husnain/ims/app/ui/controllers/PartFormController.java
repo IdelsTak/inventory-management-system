@@ -55,7 +55,7 @@ public class PartFormController {
     }
 
     public PartFormController(Part part) {
-        this(Named.DialogType.MODIFY, part);
+        this(Named.DialogType.MODIFY, Objects.requireNonNull(part, "Part to modify should not be null"));
     }
 
     private PartFormController(Named.DialogType type, Part part) {
@@ -64,28 +64,39 @@ public class PartFormController {
     }
 
     public Part getPart() {
-        var id = IdSequence.getInstance().next();
+        Part val;
         var name = nameTextField.getText();
         var price = Double.parseDouble(priceTextField.getText());
         var stock = Integer.parseInt(stockTextField.getText());
         var minStock = Integer.parseInt(minStockTextField.getText());
         var maxStock = Integer.parseInt(maxStockTextField.getText());
+        
+        if (Objects.isNull(part)) {
+            var id = IdSequence.getInstance().next();
+            
+            if (inhouseRadioButton.isSelected()) {
+                var inhouse = new InHouse(id, name, price, stock, minStock, maxStock);
+                var machineId = Integer.parseInt(nameOrMachineIdTextField.getText());
 
-        Part val;
+                inhouse.setMachineId(machineId);
 
-        if (inhouseRadioButton.isSelected()) {
-            var inhouse = new InHouse(id, name, price, stock, minStock, maxStock);
-            var machineId = Integer.parseInt(nameOrMachineIdTextField.getText());
+                val = inhouse;
+            } else {
+                var outSourced = new OutSourced(id, name, price, stock, minStock, maxStock);
 
-            inhouse.setMachineId(machineId);
+                outSourced.setCompanyName(nameOrMachineIdTextField.getText());
 
-            val = inhouse;
+                val = outSourced;
+            }
         } else {
-            var outSourced = new OutSourced(id, name, price, stock, minStock, maxStock);
-
-            outSourced.setCompanyName(nameOrMachineIdTextField.getText());
-
-            val = outSourced;
+            part.setName(name);
+            part.setStock(stock);
+            part.setPrice(price);
+            part.setMax(maxStock);
+            part.setMin(minStock);
+            
+            
+            val = part;
         }
 
         return val;
@@ -105,7 +116,21 @@ public class PartFormController {
         if (Objects.isNull(part)) {
             idTextField.setText("Auto Gen - Disabled");
         } else {
+            var inhousePart = part instanceof InHouse;
 
+            productTypeToggleGrp.selectToggle(inhousePart ? inhouseRadioButton : outsourcedRadioButton);
+
+            idTextField.setText(Integer.toString(part.getId()));
+            nameTextField.setText(part.getName());
+            stockTextField.setText(Integer.toString(part.getStock()));
+            priceTextField.setText(Double.toString(part.getPrice()));
+            maxStockTextField.setText(Integer.toString(part.getMax()));
+            minStockTextField.setText(Integer.toString(part.getMin()));
+            nameOrMachineIdTextField.setText(
+                    inhousePart
+                            ? Integer.toString(((InHouse) part).getMachineId())
+                            : ((OutSourced) part).getCompanyName()
+            );
         }
     }
 
