@@ -21,9 +21,11 @@ public class ErrorPseudoClassState implements InvalidationListener {
 
     @Override
     public void invalidated(Observable e) {
+        var text = textInput.getText();
+
         textInput.pseudoClassStateChanged(
                 PseudoClass.getPseudoClass("error"),
-                !textInput.getText().isEmpty() && !textInput.getText().matches(regex)
+                !text.isEmpty() && !text.matches(regex)
         );
     }
 
