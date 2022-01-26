@@ -13,18 +13,18 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
     <name>Inventory Management System - CRUD</name>
-     <dependencies>
+    <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
             <version>17.0.2</version>
         </dependency>
-          <dependency>
-               <groupId>${project.groupId}</groupId>
-               <artifactId>ims-app-model</artifactId>
-               <version>${project.version}</version>
-          </dependency>
-     </dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>ims-app-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
