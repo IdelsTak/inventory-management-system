@@ -1,7 +1,8 @@
 package husnain.ims.app.ui.controllers;
 
 import husnain.ims.app.ui.InventoryManagementApp;
-import husnain.ims.app.ui.controllers.utils.ColumnWidthTweak;
+import husnain.ims.app.ui.controllers.utils.PropertyRatio;
+import husnain.ims.app.ui.controllers.utils.BoundablePropertyRatio;
 import husnain.ims.app.ui.controllers.utils.Named;
 import husnain.ims.app.ui.controllers.utils.PlaceholderLabel;
 import java.io.IOException;
@@ -19,7 +20,6 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 /**
  * FXML Controller class
@@ -106,24 +106,22 @@ public class MainFormController {
     }
     
     private void setupColumnWidths() {
-        partsTable.widthProperty().addListener(new ColumnWidthTweak(
+        partsTable.widthProperty().addListener(new BoundablePropertyRatio(
                         partsTable.widthProperty(),
-                        List.of(
-                                new Pair(partIdColumn.maxWidthProperty(), 0.12),
-                                new Pair(partNameColumn.maxWidthProperty(), 0.38),
-                                new Pair(partInvLevelColumn.maxWidthProperty(), 0.22),
-                                new Pair(partPriceColumn.maxWidthProperty(), 0.28)
+                        List.of(new PropertyRatio(partIdColumn.maxWidthProperty(), 0.12),
+                                new PropertyRatio(partNameColumn.maxWidthProperty(), 0.38),
+                                new PropertyRatio(partInvLevelColumn.maxWidthProperty(), 0.22),
+                                new PropertyRatio(partPriceColumn.maxWidthProperty(), 0.28)
                         )
                 )
         );
 
-        productsTable.widthProperty().addListener(new ColumnWidthTweak(
+        productsTable.widthProperty().addListener(new BoundablePropertyRatio(
                         productsTable.widthProperty(),
-                        List.of(
-                                new Pair(productIdColumn.maxWidthProperty(), 0.12),
-                                new Pair(productNameColumn.maxWidthProperty(), 0.38),
-                                new Pair(productInvLevelColumn.maxWidthProperty(), 0.22),
-                                new Pair(productPriceColumn.maxWidthProperty(), 0.28)
+                        List.of(new PropertyRatio(productIdColumn.maxWidthProperty(), 0.12),
+                                new PropertyRatio(productNameColumn.maxWidthProperty(), 0.38),
+                                new PropertyRatio(productInvLevelColumn.maxWidthProperty(), 0.22),
+                                new PropertyRatio(productPriceColumn.maxWidthProperty(), 0.28)
                         )
                 )
         );
