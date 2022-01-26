@@ -145,6 +145,8 @@ public class PartFormController {
     private final InputError blankPriceError = new InputError("Invalid price", "should not be blank");
     private final InputError blankMaxStockError = new InputError("Invalid max", "should not be blank");
     private final InputError blankMinStockError = new InputError("Invalid min", "should not be blank");
+    private final InputError blankMachineIdError = new InputError("Invalid machine id", "should not be blank");
+    private final InputError blankCompanyNameError = new InputError("Invalid company name", "should not be blank");
 
     public Set<InputError> getInputErrors() {
         this.updateErrors(nameTextField, blankNameError);
@@ -152,6 +154,7 @@ public class PartFormController {
         this.updateErrors(priceTextField, blankPriceError);
         this.updateErrors(maxStockTextField, blankMaxStockError);
         this.updateErrors(minStockTextField, blankMinStockError);
+        this.updateErrors(nameOrMachineIdTextField, inhouseRadioButton.isSelected() ? blankMachineIdError : blankCompanyNameError);
 
         return Collections.unmodifiableSet(inputErrors);
     }
@@ -192,6 +195,11 @@ public class PartFormController {
         priceTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(priceTextField, blankPriceError));
         maxStockTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(maxStockTextField, blankMaxStockError));
         minStockTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(minStockTextField, blankMinStockError));
+        nameOrMachineIdTextField.textProperty().addListener((ov, o, n) -> {
+            this.updateErrors(nameOrMachineIdTextField, inhouseRadioButton.isSelected()
+                    ? blankMachineIdError
+                    : blankCompanyNameError);
+        });
 
         this.initErrorListening(stockTextField, "\\d+");
         this.initErrorListening(priceTextField, "\\d+|\\d+\\.\\d+");
