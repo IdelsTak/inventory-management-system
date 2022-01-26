@@ -9,10 +9,8 @@ import husnain.ims.app.ui.controllers.utils.Named;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
-import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -53,6 +51,7 @@ public class PartFormController {
     @FXML
     private Label companyOrMachineIdLabel;
     private final Part part;
+    private InvalidationListener listener;
 
     public PartFormController() {
         this(Named.DialogType.ADD, null);
@@ -137,7 +136,20 @@ public class PartFormController {
         this.initErrorListening(minStockTextField, "\\d+");
         this.initErrorListening(maxStockTextField, "\\d+");
 
+        productTypeToggleGrp.selectedToggleProperty().addListener((obs, ov, nv) -> {
+            nameOrMachineIdTextField.setText("");
+
+            if (Objects.nonNull(listener)) {
+                nameOrMachineIdTextField.textProperty().removeListener(listener);
+            }
+
+            listener = Objects.equals(nv, inhouseRadioButton)
+                    ? this.initErrorListening(nameOrMachineIdTextField, "\\d+")
+                    : null;
+        });
+
         if (Objects.isNull(part)) {
+            inhouseRadioButton.setSelected(true);
             idTextField.setText("Auto Gen - Disabled");
         } else {
             var inhousePart = part instanceof InHouse;
@@ -158,8 +170,12 @@ public class PartFormController {
         }
     }
 
-    private void initErrorListening(TextInputControl textInput, String regex) {
-        textInput.textProperty().addListener(new ErrorPseudoClassState(textInput, regex));
+    private InvalidationListener initErrorListening(TextInputControl textInput, String regex) {
+        var listener = new ErrorPseudoClassState(textInput, regex);
+
+        textInput.textProperty().addListener(listener);
+
+        return listener;
     }
 
     private void initTitle() {
