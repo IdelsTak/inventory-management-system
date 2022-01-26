@@ -21,7 +21,6 @@ import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
-import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -145,15 +144,14 @@ public class PartFormController {
     }
 
     public void updateErrorText() {
+        var ls = System.lineSeparator();
         var text = inputErrors.stream()
                 .map(InputError::toString)
-                .collect(Collectors.joining(System.lineSeparator()));
-
-        text = inputErrors.isEmpty() ? null : String.format("%d Error(s):\n%s", inputErrors.size(), text);
+                .collect(Collectors.joining(ls, String.format("%d Error(s)%s", inputErrors.size(), ls), ls));
 
         LOG.log(Level.INFO, "Error text: {0}", text);
 
-        errorLabel.setText(text);
+        errorLabel.setText(inputErrors.isEmpty() ? null : text);
     }
 
     @FXML
@@ -183,6 +181,7 @@ public class PartFormController {
         priceTextField.getPseudoClassStates().addListener(new ErrorClassesTracking("Invalid price", "value should be a number", inputErrors));
         maxStockTextField.getPseudoClassStates().addListener(new ErrorClassesTracking("Invalid max stock", "value should be a number", inputErrors));
         minStockTextField.getPseudoClassStates().addListener(new ErrorClassesTracking("Invalid min stock", "value should be a number", inputErrors));
+        nameOrMachineIdTextField.getPseudoClassStates().addListener(new ErrorClassesTracking("Invalid machine id", "value should be a number", inputErrors));
 
         inputErrors.addListener((SetChangeListener.Change<? extends InputError> change) -> {
             if (change.wasRemoved()) {
