@@ -58,7 +58,7 @@ public class PartFormController {
         this(Named.DialogType.MODIFY, part);
     }
 
-    public PartFormController(Named.DialogType type, Part part) {
+    private PartFormController(Named.DialogType type, Part part) {
         this.type = type;
         this.part = part;
     }
