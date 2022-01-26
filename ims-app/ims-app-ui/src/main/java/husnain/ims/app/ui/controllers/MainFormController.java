@@ -10,6 +10,7 @@ import husnain.ims.app.ui.controllers.utils.Named;
 import husnain.ims.app.ui.controllers.utils.PlaceholderLabel;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -22,6 +23,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
@@ -60,6 +62,11 @@ public class MainFormController {
     public void initialize() {
         this.initTablePlaceholders();
         this.setupColumnWidths();
+        
+        partIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        partNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        partPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        partInvLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         
         partsTable.setItems(Inventory.getAllParts());
     }
@@ -172,8 +179,9 @@ public class MainFormController {
     private void showPartDialog(Named.DialogType type) throws IOException {
         var url = InventoryManagementApp.class.getResource("PartForm.fxml");
         var loader = new FXMLLoader(url);
+        var controller = new PartFormController();
 
-        loader.setController(new PartFormController());
+        loader.setController(controller);
 
         DialogPane dlg = loader.load();
 
@@ -183,7 +191,11 @@ public class MainFormController {
         dlg.getButtonTypes().setAll(saveBtn, ButtonType.CANCEL);
         alert.setDialogPane(dlg);
 
-        alert.showAndWait();
+        alert.showAndWait()
+                .filter(btn -> Objects.equals(btn, saveBtn))
+                .ifPresent(btn -> {
+                    Inventory.addPart(controller.getPart());
+                });
     }
 
 }
