@@ -41,7 +41,7 @@
                </padding>
             </RadioButton>
             <Label text="ID" GridPane.rowIndex="2" />
-            <TextField fx:id="idTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="idTextField" disable="true" editable="false" style="-fx-font-style: italic;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Name" GridPane.rowIndex="3" />
             <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label text="Inv" GridPane.rowIndex="4" />
@@ -56,7 +56,7 @@
                </padding>
             </Label>
             <TextField fx:id="minStockTextField" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-            <Label fx:id="companyOrMachineIdTextField" text="Company Name" GridPane.rowIndex="7" />
+            <Label fx:id="companyOrMachineIdLabel" text="Company Name" GridPane.rowIndex="7" />
             <TextField fx:id="nameOrMachineIdTextField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
          <padding>
