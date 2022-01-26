@@ -6,12 +6,9 @@ import husnain.ims.app.model.OutSourced;
 import husnain.ims.app.model.Part;
 import husnain.ims.app.ui.controllers.utils.Named;
 import java.util.Objects;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
-import javafx.collections.ObservableSet;
-import javafx.collections.SetChangeListener;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -49,8 +46,6 @@ public class PartFormController {
     private ToggleGroup productTypeToggleGrp;
     @FXML
     private TextField stockTextField;
-    @FXML
-    private Label stockErrorLabel;
     @FXML
     private Label companyOrMachineIdLabel;
     private final Part part;
@@ -102,24 +97,25 @@ public class PartFormController {
 
         companyOrMachineIdLabel.textProperty().bind(this.createFieldForProductType());
 
-        var errorPseudoClass = PseudoClass.getPseudoClass("error");
-
-        stockTextField.textProperty().addListener(event -> {
-            stockTextField.pseudoClassStateChanged(
-                    errorPseudoClass,
-                    !stockTextField.getText().isEmpty() && !stockTextField.getText().matches("\\d+")
-            );
-        });
-
-        stockTextField.getPseudoClassStates().addListener((SetChangeListener.Change<? extends PseudoClass> change) -> {
-            stockErrorLabel.setText(change.getSet().contains(errorPseudoClass) ? "Invalid stock value" : "");
-        });
+        this.initErrorListening(priceTextField, "\\d+|\\d+\\.\\d+");
+        this.initErrorListening(stockTextField, "\\d+");
+        this.initErrorListening(minStockTextField, "\\d+");
+        this.initErrorListening(maxStockTextField, "\\d+");
 
         if (Objects.isNull(part)) {
             idTextField.setText("Auto Gen - Disabled");
         } else {
 
         }
+    }
+
+    private void initErrorListening(TextField fld, String regex) {
+        fld.textProperty().addListener(e -> {
+            fld.pseudoClassStateChanged(
+                    PseudoClass.getPseudoClass("error"),
+                    !fld.getText().isEmpty() && !fld.getText().matches(regex)
+            );
+        });
     }
 
     private void initTitle() {
