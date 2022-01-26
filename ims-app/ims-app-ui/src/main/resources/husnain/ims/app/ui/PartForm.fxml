@@ -24,17 +24,20 @@
                         <ColumnConstraints />
                     </columnConstraints>
                     <rowConstraints>
+                        <RowConstraints valignment="TOP" />
                         <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
+                  <RowConstraints />
                     </rowConstraints>
                     <children>
-                        <Label fx:id="titleLabel" style="-fx-font-weight: 700;" />
+                        <Label fx:id="titleLabel" style="-fx-font-weight: 700;">
+                     <GridPane.margin>
+                        <Insets bottom="24.0" />
+                     </GridPane.margin></Label>
                         <RadioButton fx:id="inhouseRadioButton" mnemonicParsing="false" text="In-House" GridPane.columnIndex="1">
                             <toggleGroup>
                                 <ToggleGroup fx:id="productTypeToggleGrp" />
@@ -45,24 +48,24 @@
                                 <Insets left="24.0" />
                             </padding>
                         </RadioButton>
-                        <Label text="ID" GridPane.rowIndex="2" />
-                        <TextField fx:id="idTextField" disable="true" editable="false" style="-fx-font-style: italic;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="Name" GridPane.rowIndex="3" />
-                        <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="Inv" GridPane.rowIndex="4" />
-                        <TextField fx:id="stockTextField" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="Price/Cost" GridPane.rowIndex="5" />
-                        <TextField fx:id="priceTextField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label text="Max" GridPane.rowIndex="6" />
-                        <TextField fx:id="maxStockTextField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Label text="Min" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                        <Label text="ID" GridPane.rowIndex="1" />
+                        <TextField fx:id="idTextField" disable="true" editable="false" style="-fx-font-style: italic;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Name" GridPane.rowIndex="2" />
+                        <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Inv" GridPane.rowIndex="3" />
+                        <TextField fx:id="stockTextField" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Price/Cost" GridPane.rowIndex="4" />
+                        <TextField fx:id="priceTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label text="Max" GridPane.rowIndex="5" />
+                        <TextField fx:id="maxStockTextField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label text="Min" GridPane.columnIndex="2" GridPane.rowIndex="5">
                             <padding>
                                 <Insets left="24.0" />
                             </padding>
                         </Label>
-                        <TextField fx:id="minStockTextField" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-                        <Label fx:id="companyOrMachineIdLabel" text="Company Name" GridPane.rowIndex="7" />
-                        <TextField fx:id="nameOrMachineIdTextField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <TextField fx:id="minStockTextField" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                        <Label fx:id="companyOrMachineIdLabel" text="Company Name" GridPane.rowIndex="6" />
+                        <TextField fx:id="nameOrMachineIdTextField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                     </children>
                 </GridPane>
                 <Label fx:id="errorLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: red;" VBox.vgrow="ALWAYS" />
