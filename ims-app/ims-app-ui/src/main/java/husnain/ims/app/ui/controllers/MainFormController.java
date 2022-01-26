@@ -7,6 +7,7 @@ import husnain.ims.app.model.Product;
 import husnain.ims.app.ui.InventoryManagementApp;
 import husnain.ims.app.ui.controllers.utils.PropertyRatio;
 import husnain.ims.app.ui.controllers.utils.BoundablePropertyRatio;
+import husnain.ims.app.ui.controllers.utils.InputError;
 import husnain.ims.app.ui.controllers.utils.Named;
 import husnain.ims.app.ui.controllers.utils.PlaceholderLabel;
 import java.io.IOException;
@@ -14,11 +15,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
@@ -207,17 +210,25 @@ public class MainFormController {
         var saveBtn = new ButtonType("Save", ButtonBar.ButtonData.YES);
 
         dlg.getButtonTypes().setAll(saveBtn, ButtonType.CANCEL);
+
         alert.setDialogPane(dlg);
 
-        alert.showAndWait()
-                .filter(btn -> Objects.equals(btn, saveBtn))
-                .ifPresent(btn -> {
-                    if (add) {
-                        Inventory.addPart(controller.getPart());
-                    } else {
-                        Inventory.updatePart(index, controller.getPart());
-                    }
-                });
+        var saveButton = (Button) dlg.lookupButton(saveBtn);
+
+        saveButton.addEventFilter(ActionEvent.ACTION, handler -> {
+            if (!controller.getInputErrors().isEmpty()) {
+                handler.consume();
+                controller.updateErrorText();
+            } else {
+                if (add) {
+                    Inventory.addPart(controller.getPart());
+                } else {
+                    Inventory.updatePart(index, controller.getPart());
+                }
+            }
+        });
+
+        alert.show();
     }
 
 }
