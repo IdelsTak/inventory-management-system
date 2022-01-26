@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<DialogPane minWidth="-Infinity" prefWidth="700.0" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<DialogPane minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <VBox spacing="24.0">
          <children>
@@ -65,7 +65,7 @@
                   <TextField fx:id="nameOrMachineIdTextField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                </children>
             </GridPane>
-            <Label fx:id="errorLabel" maxWidth="1.7976931348623157E308" prefHeight="100.0" style="-fx-text-fill: red;" VBox.vgrow="ALWAYS" />
+            <Label fx:id="errorLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: red;" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
    </content>
