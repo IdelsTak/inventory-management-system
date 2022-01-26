@@ -13,7 +13,7 @@ import javafx.beans.value.ObservableValue;
  * @author Husnain Arif
  */
 public class BoundablePropertyRatio implements ChangeListener<Number> {
-    
+
     private final NumberExpressionBase base;
     private final List<PropertyRatio> propRatios;
 
@@ -33,5 +33,5 @@ public class BoundablePropertyRatio implements ChangeListener<Number> {
         }
         colProp.bind(base.multiply(ratio));
     }
-    
+
 }
