@@ -22,7 +22,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -68,16 +67,21 @@ public class MainFormController {
         partIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         partNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         partPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        partPriceColumn.setCellFactory(callBck -> new FormattedPriceCell());
         partInvLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
+        partPriceColumn.setCellFactory(callBck -> new FormattedPriceCell());
+
         partsTable.setItems(Inventory.getAllParts());
+
+        partsTable.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
+
+        });
     }
 
     @FXML
     void addPart(ActionEvent event) {
         try {
-            this.showPartDialog(Named.DialogType.ADD);
+            this.showPartDialog(null);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
@@ -85,10 +89,19 @@ public class MainFormController {
 
     @FXML
     void modifyPart(ActionEvent event) {
-        try {
-            this.showPartDialog(Named.DialogType.MODIFY);
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
+        var selectedPart = partsTable.getSelectionModel().getSelectedItem();
+
+        if (Objects.isNull(selectedPart)) {
+            var alert = new Alert(Alert.AlertType.ERROR, null);
+
+            alert.setHeaderText("Can't modify. No part is selected.");
+            alert.show();
+        } else {
+            try {
+                this.showPartDialog(selectedPart);
+            } catch (IOException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -179,10 +192,12 @@ public class MainFormController {
         alert.showAndWait();
     }
 
-    private void showPartDialog(Named.DialogType type) throws IOException {
+    private void showPartDialog(Part selectedPart) throws IOException {
+        var index = Inventory.getAllParts().indexOf(selectedPart);
+        var add = Objects.isNull(selectedPart);
         var url = InventoryManagementApp.class.getResource("PartForm.fxml");
         var loader = new FXMLLoader(url);
-        var controller = new PartFormController();
+        var controller = add ? new PartFormController() : new PartFormController(selectedPart);
 
         loader.setController(controller);
 
@@ -197,9 +212,12 @@ public class MainFormController {
         alert.showAndWait()
                 .filter(btn -> Objects.equals(btn, saveBtn))
                 .ifPresent(btn -> {
-                    Inventory.addPart(controller.getPart());
+                    if (add) {
+                        Inventory.addPart(controller.getPart());
+                    } else {
+                        Inventory.updatePart(index, controller.getPart());
+                    }
                 });
     }
-
 
 }
