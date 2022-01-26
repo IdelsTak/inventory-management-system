@@ -6,9 +6,13 @@ import husnain.ims.app.model.OutSourced;
 import husnain.ims.app.model.Part;
 import husnain.ims.app.ui.controllers.utils.Named;
 import java.util.Objects;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
+import javafx.collections.ObservableSet;
+import javafx.collections.SetChangeListener;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -45,6 +49,8 @@ public class PartFormController {
     private ToggleGroup productTypeToggleGrp;
     @FXML
     private TextField stockTextField;
+    @FXML
+    private Label stockErrorLabel;
     @FXML
     private Label companyOrMachineIdLabel;
     private final Part part;
@@ -95,6 +101,19 @@ public class PartFormController {
         this.initTitle();
 
         companyOrMachineIdLabel.textProperty().bind(this.createFieldForProductType());
+
+        var errorPseudoClass = PseudoClass.getPseudoClass("error");
+
+        stockTextField.textProperty().addListener(event -> {
+            stockTextField.pseudoClassStateChanged(
+                    errorPseudoClass,
+                    !stockTextField.getText().isEmpty() && !stockTextField.getText().matches("\\d+")
+            );
+        });
+
+        stockTextField.getPseudoClassStates().addListener((SetChangeListener.Change<? extends PseudoClass> change) -> {
+            stockErrorLabel.setText(change.getSet().contains(errorPseudoClass) ? "Invalid stock value" : "");
+        });
 
         if (Objects.isNull(part)) {
             idTextField.setText("Auto Gen - Disabled");
