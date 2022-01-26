@@ -21,6 +21,7 @@ import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -139,34 +140,6 @@ public class PartFormController {
         return modifiedPart;
     }
 
-    private String getStringOrDefault(String text) {
-        return Objects.isNull(text) || text.isBlank() ? "n/a" : text;
-    }
-
-    private int getIntOrDefault(String text) {
-        int parsed = 0;
-
-        try {
-            parsed = Integer.parseInt(text);
-        } catch (NumberFormatException exc) {
-            LOG.log(Level.FINE, null, exc);
-        }
-
-        return parsed;
-    }
-
-    private double getDoubleOrDefault(String text) {
-        double parsed = 0;
-
-        try {
-            parsed = Double.parseDouble(text);
-        } catch (NumberFormatException exc) {
-            LOG.log(Level.FINE, null, exc);
-        }
-
-        return parsed;
-    }
-
     public Set<InputError> getInputErrors() {
         return Collections.unmodifiableSet(inputErrors);
     }
@@ -237,6 +210,34 @@ public class PartFormController {
                             : ((OutSourced) part).getCompanyName()
             );
         }
+    }
+
+    private String getStringOrDefault(String text) {
+        return Objects.isNull(text) || text.isBlank() ? "n/a" : text;
+    }
+
+    private int getIntOrDefault(String text) {
+        int parsed = 0;
+
+        try {
+            parsed = Integer.parseInt(text);
+        } catch (NumberFormatException exc) {
+            LOG.log(Level.FINE, null, exc);
+        }
+
+        return parsed;
+    }
+
+    private double getDoubleOrDefault(String text) {
+        double parsed = 0;
+
+        try {
+            parsed = Double.parseDouble(text);
+        } catch (NumberFormatException exc) {
+            LOG.log(Level.FINE, null, exc);
+        }
+
+        return parsed;
     }
 
     private InvalidationListener initErrorListening(TextInputControl textInput, String regex) {
