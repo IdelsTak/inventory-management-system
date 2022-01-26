@@ -5,12 +5,21 @@ import husnain.ims.app.crud.utils.IdSequence;
 import husnain.ims.app.model.InHouse;
 import husnain.ims.app.model.OutSourced;
 import husnain.ims.app.model.Part;
+import husnain.ims.app.ui.controllers.utils.InputError;
 import husnain.ims.app.ui.controllers.utils.Named;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableSet;
+import javafx.collections.SetChangeListener;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -50,8 +59,11 @@ public class PartFormController {
     private TextField stockTextField;
     @FXML
     private Label companyOrMachineIdLabel;
+    @FXML
+    private Label errorLabel;
     private final Part part;
     private InvalidationListener listener;
+    private final ObservableSet<InputError> inputErrors;
 
     public PartFormController() {
         this(Named.DialogType.ADD, null);
@@ -64,6 +76,7 @@ public class PartFormController {
     private PartFormController(Named.DialogType type, Part part) {
         this.type = type;
         this.part = part;
+        this.inputErrors = FXCollections.observableSet(new LinkedHashSet<>());
     }
 
     public Part getPart() {
@@ -125,6 +138,18 @@ public class PartFormController {
         return modifiedPart;
     }
 
+    public Set<InputError> getInputErrors() {
+        return Collections.unmodifiableSet(inputErrors);
+    }
+
+    public void updateErrorText() {
+        errorLabel.setText(
+                inputErrors.stream()
+                        .map(InputError::toString)
+                        .collect(Collectors.joining(System.lineSeparator()))
+        );
+    }
+
     @FXML
     void initialize() {
         this.initTitle();
@@ -146,6 +171,24 @@ public class PartFormController {
             listener = Objects.equals(nv, inhouseRadioButton)
                     ? this.initErrorListening(nameOrMachineIdTextField, "\\d+")
                     : null;
+        });
+
+        priceTextField.getPseudoClassStates().addListener((SetChangeListener.Change<? extends PseudoClass> change) -> {
+            var priceError = change.getSet().stream().anyMatch(pc -> Objects.equals("error", pc.getPseudoClassName()));
+            var ie = new InputError("Invalid price", "value should be a number");
+
+            if (priceError) {
+                inputErrors.add(ie);
+            } else if (inputErrors.contains(ie)) {
+                inputErrors.remove(ie);
+            }
+
+        });
+
+        inputErrors.addListener((SetChangeListener.Change<? extends InputError> change) -> {
+            if (change.wasRemoved()) {
+                this.updateErrorText();
+            }
         });
 
         if (Objects.isNull(part)) {
