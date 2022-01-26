@@ -6,7 +6,6 @@ import husnain.ims.app.model.OutSourced;
 import husnain.ims.app.model.Part;
 import husnain.ims.app.ui.controllers.utils.Named;
 import java.util.Objects;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
