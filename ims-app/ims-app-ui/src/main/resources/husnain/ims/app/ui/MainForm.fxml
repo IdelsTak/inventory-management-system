@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefWidth="1250.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="husnain.ims.app.ui.controllers.MainFormController">
+<AnchorPane id="AnchorPane" prefWidth="1250.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="husnain.ims.app.ui.controllers.MainFormController">
     <stylesheets>
         <URL value="@Styles.css" />
     </stylesheets>
@@ -46,7 +46,7 @@
                                             <children>
                                                 <Button mnemonicParsing="false" onAction="#addPart" text="Add" />
                                                 <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#modifyPart" text="Modify" />
-                                                <Button layoutX="53.0" layoutY="10.0" mnemonicParsing="false" text="Delete" />
+                                                <Button layoutX="53.0" layoutY="10.0" mnemonicParsing="false" onAction="#deletePart" text="Delete" />
                                             </children>
                                         </HBox>
                                     </children>
