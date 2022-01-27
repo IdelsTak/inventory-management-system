@@ -107,6 +107,30 @@ public class MainFormController {
     }
 
     @FXML
+    void deletePart(ActionEvent event) {
+        var selectedPart = partsTable.getSelectionModel().getSelectedItem();
+
+        if (Objects.isNull(selectedPart)) {
+            var alert = new Alert(Alert.AlertType.ERROR, null);
+
+            alert.setHeaderText("Can't delete. No part is selected.");
+            alert.show();
+        } else {
+            var yesBtn = new ButtonType("Yes", ButtonBar.ButtonData.NO);
+            var noBtn = new ButtonType("No", ButtonBar.ButtonData.OK_DONE);
+
+            var alert = new Alert(Alert.AlertType.CONFIRMATION, null, yesBtn, noBtn);
+
+            alert.setTitle("Delete");
+            alert.setHeaderText(String.format("Deleting the part \"%s\" is non-reversible. Continue?", selectedPart.getName()));
+
+            alert.showAndWait()
+                    .filter(btn -> Objects.equals(btn, yesBtn))
+                    .ifPresent(btn -> Inventory.deletePart(selectedPart));
+        }
+    }
+
+    @FXML
     void addProduct(ActionEvent event) {
         try {
             this.showProductDialog(Named.DialogType.ADD);
@@ -163,7 +187,7 @@ public class MainFormController {
         alert.setHeaderText("Continue managing inventory?");
 
         alert.showAndWait()
-                .filter(response -> response == ButtonType.NO)
+                .filter(response -> Objects.equals(response, ButtonType.NO))
                 .map(btnType -> this.doExit(event));
     }
 
