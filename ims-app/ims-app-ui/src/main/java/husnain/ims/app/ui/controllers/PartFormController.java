@@ -79,18 +79,18 @@ public class PartFormController {
 
     public Part getPart() {
         Part modifiedPart;
-        var name = this.getStringOrDefault(nameTextField.getText());
-        var price = this.getDoubleOrDefault(priceTextField.getText());
-        var stock = this.getIntOrDefault(stockTextField.getText());
-        var minStock = this.getIntOrDefault(minStockTextField.getText());
-        var maxStock = this.getIntOrDefault(maxStockTextField.getText());
+        var name = nameTextField.getText();
+        var price = Double.parseDouble(priceTextField.getText());
+        var stock = Integer.parseInt(stockTextField.getText());
+        var minStock = Integer.parseInt(minStockTextField.getText());
+        var maxStock = Integer.parseInt(maxStockTextField.getText());
 
         if (Objects.isNull(part)) {
             var id = IdSequence.getInstance().next();
 
             if (inhouseRadioButton.isSelected()) {
                 var inhouse = new InHouse(id, name, price, stock, minStock, maxStock);
-                var machineId = this.getIntOrDefault(nameOrMachineIdTextField.getText());
+                var machineId = Integer.parseInt(nameOrMachineIdTextField.getText());
 
                 inhouse.setMachineId(machineId);
 
@@ -98,7 +98,7 @@ public class PartFormController {
             } else {
                 var outSourced = new OutSourced(id, name, price, stock, minStock, maxStock);
 
-                outSourced.setCompanyName(this.getStringOrDefault(nameOrMachineIdTextField.getText()));
+                outSourced.setCompanyName(nameOrMachineIdTextField.getText());
 
                 modifiedPart = outSourced;
             }
@@ -106,12 +106,12 @@ public class PartFormController {
             if ((part instanceof InHouse) && outsourcedRadioButton.isSelected()) {
                 var outSourced = new OutSourced(part.getId(), name, price, stock, minStock, maxStock);
 
-                outSourced.setCompanyName(this.getStringOrDefault(nameOrMachineIdTextField.getText()));
+                outSourced.setCompanyName(nameOrMachineIdTextField.getText());
 
                 modifiedPart = outSourced;
             } else if ((part instanceof OutSourced) && inhouseRadioButton.isSelected()) {
                 var inhouse = new InHouse(part.getId(), name, price, stock, minStock, maxStock);
-                var machineId = this.getIntOrDefault(nameOrMachineIdTextField.getText());
+                var machineId = Integer.parseInt(nameOrMachineIdTextField.getText());
 
                 inhouse.setMachineId(machineId);
 
@@ -124,9 +124,9 @@ public class PartFormController {
                 part.setMin(minStock);
 
                 if (part instanceof InHouse inHouse) {
-                    inHouse.setMachineId(this.getIntOrDefault(nameOrMachineIdTextField.getText()));
+                    inHouse.setMachineId(Integer.parseInt(nameOrMachineIdTextField.getText()));
                 } else {
-                    ((OutSourced) part).setCompanyName(this.getStringOrDefault(nameOrMachineIdTextField.getText()));
+                    ((OutSourced) part).setCompanyName(nameOrMachineIdTextField.getText());
                 }
 
                 modifiedPart = part;
@@ -226,34 +226,6 @@ public class PartFormController {
                             : ((OutSourced) part).getCompanyName()
             );
         }
-    }
-
-    private String getStringOrDefault(String text) {
-        return Objects.isNull(text) || text.isBlank() ? "n/a" : text;
-    }
-
-    private int getIntOrDefault(String text) {
-        int parsed = 0;
-
-        try {
-            parsed = Integer.parseInt(text);
-        } catch (NumberFormatException exc) {
-            LOG.log(Level.FINE, null, exc);
-        }
-
-        return parsed;
-    }
-
-    private double getDoubleOrDefault(String text) {
-        double parsed = 0;
-
-        try {
-            parsed = Double.parseDouble(text);
-        } catch (NumberFormatException exc) {
-            LOG.log(Level.FINE, null, exc);
-        }
-
-        return parsed;
     }
 
     private void initTitle() {
