@@ -170,49 +170,78 @@ public class PartFormController {
     }
 
     private void updateErrors() {
-        this.updateError(nameTextField, new StringCheck(nameTextField.getText()).isNullOrBlank(), BLANK_NAME_ERR);
-        this.updateError(stockTextField, new StringCheck(stockTextField.getText()).isNullOrBlank(), BLANK_STOCK_ERR);
-        this.updateError(stockTextField, new RegexCheck(stockTextField.getText(), "\\d+").doesntMatch(), INVALID_STOCK_ERR);
-        this.updateError(priceTextField, new StringCheck(priceTextField.getText()).isNullOrBlank(), BLANK_PRICE_ERR);
-        this.updateError(priceTextField, new RegexCheck(priceTextField.getText(), "\\d+|\\d+\\.\\d+").doesntMatch(), INVALID_PRICE_ERR);
-        this.updateError(maxStockTextField, new StringCheck(maxStockTextField.getText()).isNullOrBlank(), BLANK_MAX_STOCK_ERR);
-        this.updateError(maxStockTextField, new RegexCheck(maxStockTextField.getText(), "\\d+").doesntMatch(), INVALID_MAX_STOCK_ERR);
-        this.updateError(minStockTextField, new StringCheck(minStockTextField.getText()).isNullOrBlank(), BLANK_MIN_STOCK_ERR);
-        this.updateError(minStockTextField, new RegexCheck(minStockTextField.getText(), "\\d+").doesntMatch(), INVALID_MIN_STOCK_ERR);
+        var stock = stockTextField.getText();
+        var min = minStockTextField.getText();
+        var max = maxStockTextField.getText();
+
+        var blankName = new StringCheck(nameTextField.getText()).isNullOrBlank();
+        var blankStock = new StringCheck(stock).isNullOrBlank();
+        var nonNumberStock = new RegexCheck(stock, "\\d+").doesntMatch();
+        var blankPrice = new StringCheck(priceTextField.getText()).isNullOrBlank();
+        var nonNumberPrice = new RegexCheck(priceTextField.getText(), "\\d+|\\d+\\.\\d+").doesntMatch();
+        var blankMaxStock = new StringCheck(max).isNullOrBlank();
+        var nonNumberMaxStock = new RegexCheck(max, "\\d+").doesntMatch();
+        var blankMinStock = new StringCheck(min).isNullOrBlank();
+        var nonNumberMinStock = new RegexCheck(min, "\\d+").doesntMatch();
+        var blankCompanyNameOrMachineId = new StringCheck(nameOrMachineIdTextField.getText()).isNullOrBlank();
+        var nonNumberMachineId = new RegexCheck(nameOrMachineIdTextField.getText(), "\\d+").doesntMatch();
+
+        this.updateError(nameTextField, blankName, BLANK_NAME_ERR);
+        this.updateError(stockTextField, blankStock, BLANK_STOCK_ERR);
+        this.updateError(stockTextField, nonNumberStock, INVALID_STOCK_ERR);
+        this.updateError(priceTextField, blankPrice, BLANK_PRICE_ERR);
+        this.updateError(priceTextField, nonNumberPrice, INVALID_PRICE_ERR);
+        this.updateError(maxStockTextField, blankMaxStock, BLANK_MAX_STOCK_ERR);
+        this.updateError(maxStockTextField, nonNumberMaxStock, INVALID_MAX_STOCK_ERR);
+        this.updateError(minStockTextField, blankMinStock, BLANK_MIN_STOCK_ERR);
+        this.updateError(minStockTextField, nonNumberMinStock, INVALID_MIN_STOCK_ERR);
 
         if (inhouseRadioButton.isSelected()) {
-            this.updateError(nameOrMachineIdTextField, new StringCheck(nameOrMachineIdTextField.getText()).isNullOrBlank(), BLANK_MACHINE_ID_OR_COMPANY_NAME_ERR);
-            this.updateError(nameOrMachineIdTextField, new RegexCheck(nameOrMachineIdTextField.getText(), "\\d+").doesntMatch(), INVALID_MACHINE_ID_ERR);
+            this.updateError(
+                    nameOrMachineIdTextField,
+                    blankCompanyNameOrMachineId,
+                    BLANK_MACHINE_ID_OR_COMPANY_NAME_ERR
+            );
+            this.updateError(
+                    nameOrMachineIdTextField,
+                    nonNumberMachineId,
+                    INVALID_MACHINE_ID_ERR
+            );
         } else {
-            this.updateError(nameOrMachineIdTextField, false, INVALID_MACHINE_ID_ERR);
-            this.updateError(nameOrMachineIdTextField, new StringCheck(nameOrMachineIdTextField.getText()).isNullOrBlank(), BLANK_MACHINE_ID_OR_COMPANY_NAME_ERR);
+            this.updateError(
+                    nameOrMachineIdTextField,
+                    false,
+                    INVALID_MACHINE_ID_ERR
+            );
+            this.updateError(
+                    nameOrMachineIdTextField,
+                    blankCompanyNameOrMachineId,
+                    BLANK_MACHINE_ID_OR_COMPANY_NAME_ERR
+            );
         }
 
         try {
-            this.updateError(
-                    stockTextField,
+            this.updateError(stockTextField,
                     new StockLevel(
-                            Integer.parseInt(stockTextField.getText()),
-                            Integer.parseInt(minStockTextField.getText()),
-                            Integer.parseInt(maxStockTextField.getText())
+                            Integer.parseInt(stock),
+                            Integer.parseInt(min),
+                            Integer.parseInt(max)
                     ).stockIsOutOfRange(),
                     OUT_OF_RANGE_STOCK_ERR
             );
-            this.updateError(
-                    maxStockTextField,
+            this.updateError(maxStockTextField,
                     new StockLevel(
-                            Integer.parseInt(stockTextField.getText()),
-                            Integer.parseInt(minStockTextField.getText()),
-                            Integer.parseInt(maxStockTextField.getText())
+                            Integer.parseInt(stock),
+                            Integer.parseInt(min),
+                            Integer.parseInt(max)
                     ).minExceedsMaxStock(),
                     OUT_OF_RANGE_MAX_STOCK_ERR
             );
-            this.updateError(
-                    minStockTextField,
+            this.updateError(minStockTextField,
                     new StockLevel(
-                            Integer.parseInt(stockTextField.getText()),
-                            Integer.parseInt(minStockTextField.getText()),
-                            Integer.parseInt(maxStockTextField.getText())
+                            Integer.parseInt(stock),
+                            Integer.parseInt(min),
+                            Integer.parseInt(max)
                     ).minExceedsMaxStock(),
                     OUT_OF_RANGE_MIN_STOCK_ERR
             );
