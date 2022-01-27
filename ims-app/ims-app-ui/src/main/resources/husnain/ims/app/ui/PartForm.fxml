@@ -68,7 +68,7 @@
                         <TextField fx:id="nameOrMachineIdTextField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                     </children>
                 </GridPane>
-                <Label fx:id="errorLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: red;" VBox.vgrow="ALWAYS" />
+                <Label fx:id="errorLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: red;" VBox.vgrow="ALWAYS" />
             </children>
         </VBox>
     </content>
