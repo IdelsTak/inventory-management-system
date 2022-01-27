@@ -26,7 +26,7 @@
                                 <HBox alignment="CENTER_LEFT">
                                     <children>
                                         <Label maxWidth="1.7976931348623157E308" style="-fx-font-weight: 700;" text="Parts" HBox.hgrow="ALWAYS" />
-                                        <TextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Search by Part ID or Name" />
+                                        <TextField fx:id="searchPartsTextField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Search by Part ID or Name" />
                                     </children>
                                 </HBox>
                                 <VBox maxHeight="1.7976931348623157E308" spacing="24.0" VBox.vgrow="ALWAYS">
