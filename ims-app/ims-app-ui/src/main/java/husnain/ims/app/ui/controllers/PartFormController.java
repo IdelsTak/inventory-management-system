@@ -51,6 +51,8 @@ public class PartFormController {
     private static final InputError BLANK_MACHINE_ID_OR_COMPANY_NAME_ERR = new InputError("Invalid machine id or company name", NOT_BLANK);
     private static final InputError INVALID_MACHINE_ID_ERR = new InputError("Invalid machine id", BE_A_NUMBER);
     private static final String INPUT_ERROR_CLASS = "input-error";
+    private static final String DOUBLES_REGEX = "\\d+|\\d+\\.\\d+";
+    private static final String INTEGERS_REGEX = "\\d+";
     private final Named.DialogType type;
     @FXML
     private Label titleLabel;
@@ -170,21 +172,24 @@ public class PartFormController {
     }
 
     private void updateErrors() {
+        var name = nameTextField.getText();
         var stock = stockTextField.getText();
+        var price = priceTextField.getText();
         var min = minStockTextField.getText();
         var max = maxStockTextField.getText();
+        var companyNameOrMachineId = nameOrMachineIdTextField.getText();
 
-        var blankName = new StringCheck(nameTextField.getText()).isNullOrBlank();
+        var blankName = new StringCheck(name).isNullOrBlank();
         var blankStock = new StringCheck(stock).isNullOrBlank();
-        var nonNumberStock = new RegexCheck(stock, "\\d+").doesntMatch();
-        var blankPrice = new StringCheck(priceTextField.getText()).isNullOrBlank();
-        var nonNumberPrice = new RegexCheck(priceTextField.getText(), "\\d+|\\d+\\.\\d+").doesntMatch();
+        var nonNumberStock = new RegexCheck(stock, INTEGERS_REGEX).doesntMatch();
+        var blankPrice = new StringCheck(price).isNullOrBlank();
+        var nonNumberPrice = new RegexCheck(price, DOUBLES_REGEX).doesntMatch();
         var blankMaxStock = new StringCheck(max).isNullOrBlank();
-        var nonNumberMaxStock = new RegexCheck(max, "\\d+").doesntMatch();
+        var nonNumberMaxStock = new RegexCheck(max, INTEGERS_REGEX).doesntMatch();
         var blankMinStock = new StringCheck(min).isNullOrBlank();
-        var nonNumberMinStock = new RegexCheck(min, "\\d+").doesntMatch();
-        var blankCompanyNameOrMachineId = new StringCheck(nameOrMachineIdTextField.getText()).isNullOrBlank();
-        var nonNumberMachineId = new RegexCheck(nameOrMachineIdTextField.getText(), "\\d+").doesntMatch();
+        var nonNumberMinStock = new RegexCheck(min, INTEGERS_REGEX).doesntMatch();
+        var blankCompanyNameOrMachineId = new StringCheck(companyNameOrMachineId).isNullOrBlank();
+        var nonNumberMachineId = new RegexCheck(companyNameOrMachineId, INTEGERS_REGEX).doesntMatch();
 
         this.updateError(nameTextField, blankName, BLANK_NAME_ERR);
         this.updateError(stockTextField, blankStock, BLANK_STOCK_ERR);
