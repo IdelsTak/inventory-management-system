@@ -1,13 +1,13 @@
 package husnain.ims.app.ui.controllers;
 
-import husnain.ims.app.ui.controllers.utils.ErrorTracking;
-import husnain.ims.app.ui.controllers.utils.ErrorPseudoClassState;
 import husnain.ims.app.crud.utils.IdSequence;
 import husnain.ims.app.model.InHouse;
 import husnain.ims.app.model.OutSourced;
 import husnain.ims.app.model.Part;
 import husnain.ims.app.ui.controllers.utils.InputError;
 import husnain.ims.app.ui.controllers.utils.Named;
+import husnain.ims.app.ui.controllers.utils.RegexCheck;
+import husnain.ims.app.ui.controllers.utils.StringCheck;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -15,13 +15,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
-import javafx.collections.SetChangeListener;
-import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -64,7 +61,6 @@ public class PartFormController {
     @FXML
     private Label errorLabel;
     private final Part part;
-    private InvalidationListener listener;
     private final ObservableSet<InputError> inputErrors;
 
     public PartFormController() {
@@ -139,38 +135,24 @@ public class PartFormController {
 
         return modifiedPart;
     }
-
-    private final InputError blankNameError = new InputError("Invalid name", "should not be blank");
-    private final InputError blankStockError = new InputError("Invalid inv", "should not be blank");
-    private final InputError blankPriceError = new InputError("Invalid price", "should not be blank");
-    private final InputError blankMaxStockError = new InputError("Invalid max", "should not be blank");
-    private final InputError blankMinStockError = new InputError("Invalid min", "should not be blank");
-    private final InputError blankMachineIdError = new InputError("Invalid machine id", "should not be blank");
-    private final InputError blankCompanyNameError = new InputError("Invalid company name", "should not be blank");
+    private static final String NOT_BLANK = "should not be blank";
+    private static final String BE_A_NUMBER = "should be a number";
+    private final InputError blankNameError = new InputError("Invalid name", NOT_BLANK);
+    private final InputError blankStockError = new InputError("Invalid inv", NOT_BLANK);
+    private final InputError invalidStockError = new InputError("Invalid inv", BE_A_NUMBER);
+    private final InputError blankPriceError = new InputError("Invalid price", NOT_BLANK);
+    private final InputError invalidPriceError = new InputError("Invalid price", BE_A_NUMBER);
+    private final InputError blankMaxStockError = new InputError("Invalid max", NOT_BLANK);
+    private final InputError invalidMaxStockError = new InputError("Invalid max", BE_A_NUMBER);
+    private final InputError blankMinStockError = new InputError("Invalid min", NOT_BLANK);
+    private final InputError invalidMinStockError = new InputError("Invalid min", BE_A_NUMBER);
+    private final InputError blankMachineIdOrCompanyNameError = new InputError("Invalid machine id or company name", NOT_BLANK);
+    private final InputError invalidMachineIdError = new InputError("Invalid machine id", BE_A_NUMBER);
 
     public Set<InputError> getInputErrors() {
-        this.updateErrors(nameTextField, blankNameError);
-        this.updateErrors(stockTextField, blankStockError);
-        this.updateErrors(priceTextField, blankPriceError);
-        this.updateErrors(maxStockTextField, blankMaxStockError);
-        this.updateErrors(minStockTextField, blankMinStockError);
-        this.updateErrors(nameOrMachineIdTextField, inhouseRadioButton.isSelected() ? blankMachineIdError : blankCompanyNameError);
+        this.updateErrors();
 
         return Collections.unmodifiableSet(inputErrors);
-    }
-
-    private void updateErrors(TextInputControl textInput, InputError err) {
-        if (isBlankOrNullText(textInput.getText())) {
-            inputErrors.add(err);
-            textInput.getStyleClass().add("input-error");
-        } else if (inputErrors.contains(err)) {
-            inputErrors.remove(err);
-            textInput.getStyleClass().remove("input-error");
-        }
-    }
-
-    private boolean isBlankOrNullText(String text) {
-        return Objects.isNull(text) || text.isBlank();
     }
 
     public void updateErrorText() {
@@ -184,51 +166,45 @@ public class PartFormController {
         errorLabel.setText(inputErrors.isEmpty() ? null : text);
     }
 
+    private void updateErrors() {
+        this.updateError(nameTextField, new StringCheck(nameTextField.getText()).isNullOrBlank(), blankNameError);
+        this.updateError(stockTextField, new StringCheck(stockTextField.getText()).isNullOrBlank(), blankStockError);
+        this.updateError(stockTextField, new RegexCheck(stockTextField.getText(), "\\d+").doesntMatch(), invalidStockError);
+        this.updateError(priceTextField, new StringCheck(priceTextField.getText()).isNullOrBlank(), blankPriceError);
+        this.updateError(priceTextField, new RegexCheck(priceTextField.getText(), "\\d+|\\d+\\.\\d+").doesntMatch(), invalidPriceError);
+        this.updateError(maxStockTextField, new StringCheck(maxStockTextField.getText()).isNullOrBlank(), blankMaxStockError);
+        this.updateError(maxStockTextField, new RegexCheck(maxStockTextField.getText(), "\\d+").doesntMatch(), invalidMaxStockError);
+        this.updateError(minStockTextField, new StringCheck(minStockTextField.getText()).isNullOrBlank(), blankMinStockError);
+        this.updateError(minStockTextField, new RegexCheck(minStockTextField.getText(), "\\d+").doesntMatch(), invalidMinStockError);
+
+        if (inhouseRadioButton.isSelected()) {
+            this.updateError(nameOrMachineIdTextField, new StringCheck(nameOrMachineIdTextField.getText()).isNullOrBlank(), blankMachineIdOrCompanyNameError);
+            this.updateError(nameOrMachineIdTextField, new RegexCheck(nameOrMachineIdTextField.getText(), "\\d+").doesntMatch(), invalidMachineIdError);
+        } else {
+            this.updateError(nameOrMachineIdTextField, false, invalidMachineIdError);
+            this.updateError(nameOrMachineIdTextField, new StringCheck(nameOrMachineIdTextField.getText()).isNullOrBlank(), blankMachineIdOrCompanyNameError);
+        }
+    }
+
+    private void updateError(TextInputControl textInput, boolean invalid, InputError error) {
+        var styleClass = textInput.getStyleClass();
+
+        if (invalid) {
+            inputErrors.add(error);
+            if (!styleClass.contains("input-error")) {
+                styleClass.add("input-error");
+            }
+        } else {
+            inputErrors.remove(error);
+            styleClass.setAll(styleClass.stream().filter(sc -> !Objects.equals(sc, "input-error")).toArray(String[]::new));
+        }
+    }
+
     @FXML
     void initialize() {
         this.initTitle();
 
         companyOrMachineIdLabel.textProperty().bind(this.createFieldForProductType());
-
-        nameTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(nameTextField, blankNameError));
-        stockTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(stockTextField, blankStockError));
-        priceTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(priceTextField, blankPriceError));
-        maxStockTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(maxStockTextField, blankMaxStockError));
-        minStockTextField.textProperty().addListener((ov, o, n) -> this.updateErrors(minStockTextField, blankMinStockError));
-        nameOrMachineIdTextField.textProperty().addListener((ov, o, n) -> {
-            this.updateErrors(nameOrMachineIdTextField, inhouseRadioButton.isSelected()
-                    ? blankMachineIdError
-                    : blankCompanyNameError);
-        });
-
-        this.initErrorListening(stockTextField, "\\d+");
-        this.initErrorListening(priceTextField, "\\d+|\\d+\\.\\d+");
-        this.initErrorListening(maxStockTextField, "\\d+");
-        this.initErrorListening(minStockTextField, "\\d+");
-
-        productTypeToggleGrp.selectedToggleProperty().addListener((obs, ov, nv) -> {
-            nameOrMachineIdTextField.setText("");
-
-            if (Objects.nonNull(listener)) {
-                nameOrMachineIdTextField.textProperty().removeListener(listener);
-            }
-
-            listener = Objects.equals(nv, inhouseRadioButton)
-                    ? this.initErrorListening(nameOrMachineIdTextField, "\\d+")
-                    : null;
-        });
-
-        stockTextField.getPseudoClassStates().addListener(new ErrorTracking("Invalid inv", "value should be a number", inputErrors));
-        priceTextField.getPseudoClassStates().addListener(new ErrorTracking("Invalid price", "value should be a number", inputErrors));
-        maxStockTextField.getPseudoClassStates().addListener(new ErrorTracking("Invalid max stock", "value should be a number", inputErrors));
-        minStockTextField.getPseudoClassStates().addListener(new ErrorTracking("Invalid min stock", "value should be a number", inputErrors));
-        nameOrMachineIdTextField.getPseudoClassStates().addListener(new ErrorTracking("Invalid machine id", "value should be a number", inputErrors));
-
-        inputErrors.addListener((SetChangeListener.Change<? extends InputError> change) -> {
-            if (change.wasRemoved()) {
-                this.updateErrorText();
-            }
-        });
 
         if (Objects.isNull(part)) {
             inhouseRadioButton.setSelected(true);
@@ -278,14 +254,6 @@ public class PartFormController {
         }
 
         return parsed;
-    }
-
-    private InvalidationListener initErrorListening(TextInputControl textInput, String regex) {
-        var invListener = new ErrorPseudoClassState(textInput, regex);
-
-        textInput.textProperty().addListener(invListener);
-
-        return invListener;
     }
 
     private void initTitle() {
