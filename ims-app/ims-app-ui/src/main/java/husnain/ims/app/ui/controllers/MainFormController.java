@@ -25,6 +25,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -36,6 +37,8 @@ import javafx.stage.Stage;
 public class MainFormController {
 
     private static final Logger LOG = Logger.getLogger(MainFormController.class.getName());
+    @FXML
+    private TextField searchPartsTextField;
     @FXML
     private TableView<Part> partsTable;
     @FXML
@@ -73,10 +76,6 @@ public class MainFormController {
         partPriceColumn.setCellFactory(callBck -> new FormattedPriceCell());
 
         partsTable.setItems(Inventory.getAllParts());
-
-        partsTable.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
-
-        });
     }
 
     @FXML
@@ -151,6 +150,14 @@ public class MainFormController {
     @FXML
     void exitApplication(ActionEvent event) {
         this.showExitDialog(event);
+    }
+
+    private boolean partFound(Part part, String query) {
+        var lcQuery = query.toLowerCase();
+        var name = part.getName();
+        var lcName = name.toLowerCase();
+
+        return lcQuery.equals(Integer.toString(part.getId())) || lcName.contains(lcQuery);
     }
 
     private void initTablePlaceholders() {
