@@ -2,6 +2,7 @@
 module ims.ui {
     requires ims.crud;
     requires ims.model;
+    requires ims.sample.data;
     requires java.logging;
     requires javafx.fxml;
     requires javafx.graphics;
