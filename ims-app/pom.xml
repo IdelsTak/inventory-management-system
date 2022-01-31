@@ -17,6 +17,7 @@
     </modules>
     <build>
         <plugins>
+            <!--Generate JavaDoc by running "mvn compile javadoc:javadoc javadoc:aggregate"-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
