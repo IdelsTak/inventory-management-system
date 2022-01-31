@@ -49,9 +49,9 @@ public class MainFormController {
     @FXML
     private TableColumn<Part, String> partNameColumn;
     @FXML
-    private TableColumn<Part, Double> partPriceColumn;
-    @FXML
     private TableColumn<Part, Integer> partInvLevelColumn;
+    @FXML
+    private TableColumn<Part, Double> partPriceColumn;
     @FXML
     private TextField searchProductsTextField;
     @FXML
@@ -75,8 +75,8 @@ public class MainFormController {
 
         partIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         partNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        partPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         partInvLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        partPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         partPriceColumn.setCellFactory(callBck -> new FormattedPriceCell());
 
