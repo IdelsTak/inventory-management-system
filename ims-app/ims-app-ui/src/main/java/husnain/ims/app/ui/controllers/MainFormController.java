@@ -57,6 +57,8 @@ public class MainFormController {
     @FXML
     private TableColumn<Part, Double> partPriceColumn;
     @FXML
+    private Button addPartButton;
+    @FXML
     private TextField searchProductsTextField;
     @FXML
     private TableView<Product> productsTable;
@@ -76,6 +78,7 @@ public class MainFormController {
     public void initialize() {
         this.initTablePlaceholders();
         this.setupColumnWidths();
+        this.initFocus();
 
         partIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         partNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -87,13 +90,14 @@ public class MainFormController {
         partsTable.setItems(Inventory.getAllParts());
 
         searchPartsTextField.textProperty().addListener(new SearchListener<>(
-                        new SearchableList<>(
-                                Inventory.getAllParts(),
-                                Function.identity(),
-                                new Search<>(Inventory::lookupPart, Inventory::lookupPart)
-                        ),
-                        partsTable
-                )
+                new SearchableList<>(
+                        Inventory.getAllParts(),
+                        Function.identity(),
+                        new Search<>(Inventory::lookupPart, Inventory::lookupPart)
+                ),
+                searchPartsTextField,
+                partsTable
+        )
         );
 
         productIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -106,13 +110,14 @@ public class MainFormController {
         productsTable.setItems(Inventory.getAllProducts());
 
         searchProductsTextField.textProperty().addListener(new SearchListener<>(
-                        new SearchableList<>(
-                                Inventory.getAllProducts(),
-                                Function.identity(),
-                                new Search<>(Inventory::lookupProduct, Inventory::lookupProduct)
-                        ),
-                        productsTable
-                )
+                new SearchableList<>(
+                        Inventory.getAllProducts(),
+                        Function.identity(),
+                        new Search<>(Inventory::lookupProduct, Inventory::lookupProduct)
+                ),
+                searchProductsTextField,
+                productsTable
+        )
         );
 
     }
@@ -251,6 +256,10 @@ public class MainFormController {
                         )
                 )
         );
+    }
+
+    private void initFocus() {
+        addPartButton.skinProperty().addListener(o -> addPartButton.requestFocus());
     }
 
     private void showExitDialog(ActionEvent event) {
