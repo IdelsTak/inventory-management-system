@@ -174,6 +174,7 @@ public class PartFormController {
     @FXML
     void initialize() {
         this.initTitle(type.toString());
+        this.initFocus();
 
         companyOrMachineIdLabel.textProperty().bind(this.createFieldForProductType());
 
@@ -201,6 +202,10 @@ public class PartFormController {
 
     private void initTitle(String typeName) {
         titleLabel.setText(String.format("%s Part", typeName));
+    }
+
+    private void initFocus() {
+        nameTextField.skinProperty().addListener(o -> nameTextField.requestFocus());
     }
 
     private StringBinding createFieldForProductType() {
