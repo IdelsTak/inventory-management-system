@@ -1,6 +1,7 @@
 package husnain.ims.app.ui.controllers;
 
 import husnain.ims.app.crud.Inventory;
+import husnain.ims.app.crud.utils.IdSequence;
 import husnain.ims.app.model.Part;
 import husnain.ims.app.model.Product;
 import husnain.ims.app.ui.controllers.utils.PropertyRatio;
@@ -9,20 +10,29 @@ import husnain.ims.app.ui.controllers.utils.FormattedPriceCell;
 import husnain.ims.app.ui.controllers.utils.InputError;
 import husnain.ims.app.ui.controllers.utils.Named;
 import husnain.ims.app.ui.controllers.utils.PlaceholderLabel;
+import husnain.ims.app.ui.controllers.utils.RegexCheck;
 import husnain.ims.app.ui.controllers.utils.Search;
+import husnain.ims.app.ui.controllers.utils.SearchListener;
 import husnain.ims.app.ui.controllers.utils.SearchableList;
+import husnain.ims.app.ui.controllers.utils.StockLevel;
+import husnain.ims.app.ui.controllers.utils.StringCheck;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
@@ -32,11 +42,43 @@ import javafx.scene.control.cell.PropertyValueFactory;
  */
 public class ProductFormController {
 
+    private static final Logger LOG = Logger.getLogger(ProductFormController.class.getName());
+    private static final String INPUT_ERROR_CLASS = "input-error";
+    private static final String DOUBLES_REGEX = "\\d+|\\d+\\.\\d+";
+    private static final String INTEGERS_REGEX = "\\d+";
+    private static final String NOT_BLANK = "should not be blank";
+    private static final String BE_A_NUMBER = "should be a number";
+    private static final InputError BLANK_NAME_ERR = new InputError("Invalid name", NOT_BLANK);
+    private static final InputError BLANK_STOCK_ERR = new InputError("Invalid inv", NOT_BLANK);
+    private static final InputError INVALID_STOCK_ERR = new InputError("Invalid inv", BE_A_NUMBER);
+    private static final InputError OUT_OF_RANGE_STOCK_ERR = new InputError("Invalid inv", "should be greater than min and less than max");
+    private static final InputError BLANK_PRICE_ERR = new InputError("Invalid price", NOT_BLANK);
+    private static final InputError INVALID_PRICE_ERR = new InputError("Invalid price", BE_A_NUMBER);
+    private static final InputError BLANK_MAX_STOCK_ERR = new InputError("Invalid max", NOT_BLANK);
+    private static final InputError INVALID_MAX_STOCK_ERR = new InputError("Invalid max", BE_A_NUMBER);
+    private static final InputError OUT_OF_RANGE_MAX_STOCK_ERR = new InputError("Invalid max", "should be greater than min");
+    private static final InputError BLANK_MIN_STOCK_ERR = new InputError("Invalid min", NOT_BLANK);
+    private static final InputError INVALID_MIN_STOCK_ERR = new InputError("Invalid min", BE_A_NUMBER);
+    private static final InputError OUT_OF_RANGE_MIN_STOCK_ERR = new InputError("Invalid min", "should be less than max");
     private final Named.DialogType type;
+    private final ObservableSet<InputError> inputErrors;
+    private final Product product;
     @FXML
     private Label titleLabel;
     @FXML
     private TextField prodIdTextField;
+    @FXML
+    private TextField nameTextField;
+    @FXML
+    private TextField stockTextField;
+    @FXML
+    private TextField priceTextField;
+    @FXML
+    private TextField maxStockTextField;
+    @FXML
+    private TextField minStockTextField;
+    @FXML
+    private Label errorLabel;
     @FXML
     private TextField searchPartsTextField;
     @FXML
@@ -59,8 +101,6 @@ public class ProductFormController {
     private TableView<?> assocPartsTable;
     @FXML
     private TableColumn<?, ?> assocPriceColumn;
-    private final ObservableSet<InputError> inputErrors;
-    private final Product product;
 
     public ProductFormController() {
         this(Named.DialogType.ADD, null);
@@ -69,11 +109,51 @@ public class ProductFormController {
     public ProductFormController(Product product) {
         this(Named.DialogType.MODIFY, Objects.requireNonNull(product, "Product to modify should not be null"));
     }
-    
+
     private ProductFormController(Named.DialogType type, Product product) {
         this.type = type;
         this.product = product;
         this.inputErrors = FXCollections.observableSet(new LinkedHashSet<>());
+    }
+
+    public Product getProduct() {
+        Product modifiedProduct;
+        var name = nameTextField.getText();
+        var price = Double.parseDouble(priceTextField.getText());
+        var stock = Integer.parseInt(stockTextField.getText());
+        var minStock = Integer.parseInt(minStockTextField.getText());
+        var maxStock = Integer.parseInt(maxStockTextField.getText());
+
+        if (Objects.isNull(product)) {
+            var id = IdSequence.getInstance().next();
+
+            modifiedProduct = new Product(id, name, price, stock, minStock, maxStock);
+        } else {
+            product.setName(name);
+            product.setStock(stock);
+            product.setPrice(price);
+            product.setMax(maxStock);
+            product.setMin(minStock);
+
+            modifiedProduct = product;
+        }
+
+        return modifiedProduct;
+    }
+
+    public Set<InputError> getInputErrors() {
+        this.updateErrors();
+
+        return Collections.unmodifiableSet(inputErrors);
+    }
+
+    public void updateErrorText() {
+        var ls = System.lineSeparator();
+        var text = inputErrors.stream()
+                .map(InputError::toString)
+                .collect(Collectors.joining(ls, String.format("%d Error(s)%s", inputErrors.size(), ls), ls));
+
+        errorLabel.setText(inputErrors.isEmpty() ? null : text);
     }
 
     /**
@@ -95,31 +175,26 @@ public class ProductFormController {
 
         partsTable.setItems(Inventory.getAllParts());
 
-        searchPartsTextField.textProperty().addListener((obs, oldText, newText) -> {
-            var sl = new SearchableList<Part>(
-                    Inventory.getAllParts(),
-                    newText,
-                    Function.identity(),
-                    new Search<>(Inventory::lookupPart, Inventory::lookupPart)
-            );
-            var filtered = sl.getFiltered();
+        searchPartsTextField.textProperty().addListener(new SearchListener<>(
+                        new SearchableList<>(
+                                Inventory.getAllParts(),
+                                Function.identity(),
+                                new Search<>(Inventory::lookupPart, Inventory::lookupPart)
+                        ),
+                        partsTable
+                )
+        );
 
-            if (filtered.isEmpty()) {
-                var alert = new Alert(Alert.AlertType.WARNING, null);
-
-                alert.setHeaderText("No part found for query: \"%s\"".formatted(searchPartsTextField.getText()));
-                alert.show();
-
-                searchPartsTextField.setText(null);
-                partsTable.requestFocus();
-            } else {
-                partsTable.setItems(filtered);
-            }
-        });
-        
         if (Objects.isNull(product)) {
             prodIdTextField.setText("Auto Gen - Disabled");
-        } 
+        } else {
+            prodIdTextField.setText(Integer.toString(product.getId()));
+            nameTextField.setText(product.getName());
+            stockTextField.setText(Integer.toString(product.getStock()));
+            priceTextField.setText(Double.toString(product.getPrice()));
+            maxStockTextField.setText(Integer.toString(product.getMax()));
+            minStockTextField.setText(Integer.toString(product.getMin()));
+        }
     }
 
     private void initTitle(String typeName) {
@@ -157,6 +232,77 @@ public class ProductFormController {
                         )
                 )
         );
+    }
+
+    private void updateErrors() {
+        var name = nameTextField.getText();
+        var stock = stockTextField.getText();
+        var price = priceTextField.getText();
+        var min = minStockTextField.getText();
+        var max = maxStockTextField.getText();
+
+        var blankName = new StringCheck(name).isNullOrBlank();
+        var blankStock = new StringCheck(stock).isNullOrBlank();
+        var nonNumberStock = new RegexCheck(stock, INTEGERS_REGEX).doesntMatch();
+        var blankPrice = new StringCheck(price).isNullOrBlank();
+        var nonNumberPrice = new RegexCheck(price, DOUBLES_REGEX).doesntMatch();
+        var blankMaxStock = new StringCheck(max).isNullOrBlank();
+        var nonNumberMaxStock = new RegexCheck(max, INTEGERS_REGEX).doesntMatch();
+        var blankMinStock = new StringCheck(min).isNullOrBlank();
+        var nonNumberMinStock = new RegexCheck(min, INTEGERS_REGEX).doesntMatch();
+
+        this.updateError(nameTextField, blankName, BLANK_NAME_ERR);
+        this.updateError(stockTextField, blankStock, BLANK_STOCK_ERR);
+        this.updateError(stockTextField, nonNumberStock, INVALID_STOCK_ERR);
+        this.updateError(priceTextField, blankPrice, BLANK_PRICE_ERR);
+        this.updateError(priceTextField, nonNumberPrice, INVALID_PRICE_ERR);
+        this.updateError(maxStockTextField, blankMaxStock, BLANK_MAX_STOCK_ERR);
+        this.updateError(maxStockTextField, nonNumberMaxStock, INVALID_MAX_STOCK_ERR);
+        this.updateError(minStockTextField, blankMinStock, BLANK_MIN_STOCK_ERR);
+        this.updateError(minStockTextField, nonNumberMinStock, INVALID_MIN_STOCK_ERR);
+
+        try {
+            this.updateError(stockTextField,
+                    new StockLevel(
+                            Integer.parseInt(stock),
+                            Integer.parseInt(min),
+                            Integer.parseInt(max)
+                    ).stockIsOutOfRange(),
+                    OUT_OF_RANGE_STOCK_ERR
+            );
+            this.updateError(maxStockTextField,
+                    new StockLevel(
+                            Integer.parseInt(stock),
+                            Integer.parseInt(min),
+                            Integer.parseInt(max)
+                    ).minExceedsMaxStock(),
+                    OUT_OF_RANGE_MAX_STOCK_ERR
+            );
+            this.updateError(minStockTextField,
+                    new StockLevel(
+                            Integer.parseInt(stock),
+                            Integer.parseInt(min),
+                            Integer.parseInt(max)
+                    ).minExceedsMaxStock(),
+                    OUT_OF_RANGE_MIN_STOCK_ERR
+            );
+        } catch (NumberFormatException exc) {
+            LOG.log(Level.FINE, null, exc);
+        }
+    }
+
+    private void updateError(TextInputControl textInput, boolean invalid, InputError error) {
+        var styleClass = textInput.getStyleClass();
+
+        if (invalid) {
+            inputErrors.add(error);
+            if (!styleClass.contains(INPUT_ERROR_CLASS)) {
+                styleClass.add(INPUT_ERROR_CLASS);
+            }
+        } else {
+            inputErrors.remove(error);
+            styleClass.setAll(styleClass.stream().filter(sc -> !Objects.equals(sc, INPUT_ERROR_CLASS)).toArray(String[]::new));
+        }
     }
 
 }
