@@ -26,9 +26,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -64,6 +68,7 @@ public class ProductFormController {
     private final Named.DialogType type;
     private final ObservableSet<InputError> inputErrors;
     private final Product product;
+    private final ObservableList<Part> associatedParts;
     @FXML
     private Label titleLabel;
     @FXML
@@ -93,15 +98,15 @@ public class ProductFormController {
     @FXML
     private TableColumn<Part, Double> partPriceColumn;
     @FXML
-    private TableColumn<?, ?> assocInvLevelColumn;
+    private TableView<Part> assocPartsTable;
     @FXML
-    private TableColumn<?, ?> assocPartIdColumn;
+    private TableColumn<Part, Integer> assocPartIdColumn;
     @FXML
-    private TableColumn<?, ?> assocPartNameColumn;
+    private TableColumn<Part, String> assocPartNameColumn;
     @FXML
-    private TableView<?> assocPartsTable;
+    private TableColumn<Part, Integer> assocInvLevelColumn;
     @FXML
-    private TableColumn<?, ?> assocPriceColumn;
+    private TableColumn<Part, Double> assocPriceColumn;
 
     public ProductFormController() {
         this(Named.DialogType.ADD, null);
@@ -115,6 +120,7 @@ public class ProductFormController {
         this.type = type;
         this.product = product;
         this.inputErrors = FXCollections.observableSet(new LinkedHashSet<>());
+        this.associatedParts = FXCollections.observableArrayList();
     }
 
     public Product getProduct() {
@@ -129,12 +135,18 @@ public class ProductFormController {
             var id = IdSequence.getInstance().next();
 
             modifiedProduct = new Product(id, name, price, stock, minStock, maxStock);
+            //Add the parts that we're chosen in this form
+            associatedParts.stream().forEachOrdered(modifiedProduct::addAssociatedPart);
         } else {
             product.setName(name);
             product.setStock(stock);
             product.setPrice(price);
             product.setMax(maxStock);
             product.setMin(minStock);
+            //First, remove all the existing parts
+            product.getAllAssociatedParts().stream().forEachOrdered(product::deleteAssociatedPart);
+            //Then, add the parts that we're chosen in this form
+            associatedParts.stream().forEachOrdered(product::addAssociatedPart);
 
             modifiedProduct = product;
         }
@@ -184,8 +196,16 @@ public class ProductFormController {
                 ),
                 searchPartsTextField,
                 partsTable
-        )
-        );
+        ));
+
+        assocPartIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        assocPartNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        assocInvLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        assocPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        assocPriceColumn.setCellFactory(callBck -> new FormattedPriceCell());
+
+        assocPartsTable.setItems(associatedParts);
 
         if (Objects.isNull(product)) {
             prodIdTextField.setText("Auto Gen - Disabled");
@@ -196,16 +216,49 @@ public class ProductFormController {
             priceTextField.setText(Double.toString(product.getPrice()));
             maxStockTextField.setText(Integer.toString(product.getMax()));
             minStockTextField.setText(Integer.toString(product.getMin()));
+            associatedParts.setAll(product.getAllAssociatedParts());
         }
     }
 
     @FXML
     void addAssociatedPart(ActionEvent event) {
+        var selectedPart = partsTable.getSelectionModel().getSelectedItem();
+
+        if (Objects.isNull(selectedPart)) {
+            var alert = new Alert(Alert.AlertType.ERROR, null);
+
+            alert.setHeaderText("Can't add. No part is selected.");
+            alert.show();
+        } else {
+            associatedParts.add(selectedPart);
+        }
+
         event.consume();
     }
 
     @FXML
     void removeAssociatedPart(ActionEvent event) {
+        var selectedPart = assocPartsTable.getSelectionModel().getSelectedItem();
+
+        if (Objects.isNull(selectedPart)) {
+            var alert = new Alert(Alert.AlertType.ERROR, null);
+
+            alert.setHeaderText("Can't remove. No associated part is selected.");
+            alert.show();
+        } else {
+            var yesBtn = new ButtonType("Yes", ButtonBar.ButtonData.NO);
+            var noBtn = new ButtonType("No", ButtonBar.ButtonData.OK_DONE);
+
+            var alert = new Alert(Alert.AlertType.CONFIRMATION, null, yesBtn, noBtn);
+
+            alert.setTitle("Remove");
+            alert.setHeaderText(String.format("Removing the part \"%s\" will dissociate it with the product. Continue?", selectedPart.getName()));
+
+            alert.showAndWait()
+                    .filter(btn -> Objects.equals(btn, yesBtn))
+                    .ifPresent(btn -> associatedParts.remove(selectedPart));
+        }
+
         event.consume();
     }
 
