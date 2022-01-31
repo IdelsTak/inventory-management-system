@@ -7,8 +7,12 @@ import husnain.ims.app.ui.controllers.utils.BoundablePropertyRatio;
 import husnain.ims.app.ui.controllers.utils.FormattedPriceCell;
 import husnain.ims.app.ui.controllers.utils.Named;
 import husnain.ims.app.ui.controllers.utils.PlaceholderLabel;
+import husnain.ims.app.ui.controllers.utils.Search;
+import husnain.ims.app.ui.controllers.utils.SearchableList;
 import java.util.List;
+import java.util.function.Function;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,6 +31,8 @@ public class ProductFormController {
     private Label titleLabel;
     @FXML
     private TextField prodIdTextField;
+    @FXML
+    private TextField searchPartsTextField;
     @FXML
     private TableView<Part> partsTable;
     @FXML
@@ -74,6 +80,28 @@ public class ProductFormController {
         partPriceColumn.setCellFactory(callBck -> new FormattedPriceCell());
 
         partsTable.setItems(Inventory.getAllParts());
+
+        searchPartsTextField.textProperty().addListener((obs, oldText, newText) -> {
+            var sl = new SearchableList<Part>(
+                    Inventory.getAllParts(),
+                    newText,
+                    Function.identity(),
+                    new Search<>(Inventory::lookupPart, Inventory::lookupPart)
+            );
+            var filtered = sl.getFiltered();
+
+            if (filtered.isEmpty()) {
+                var alert = new Alert(Alert.AlertType.WARNING, null);
+
+                alert.setHeaderText("No part found for query: \"%s\"".formatted(searchPartsTextField.getText()));
+                alert.show();
+
+                searchPartsTextField.setText(null);
+                partsTable.requestFocus();
+            } else {
+                partsTable.setItems(filtered);
+            }
+        });
     }
 
     private void initTitle() {
