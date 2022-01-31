@@ -10,18 +10,16 @@ import javafx.collections.ObservableList;
 public class SearchableList<T> {
 
     private final ObservableList<T> unfiltered;
-    private final String query;
     private final Function<ObservableList<T>, ObservableList<T>> identity;
     private final Function<String, ObservableList<T>> search;
 
-    public SearchableList(ObservableList<T> unfiltered, String query, Function<ObservableList<T>, ObservableList<T>> identity, Function<String, ObservableList<T>> search) {
+    public SearchableList(ObservableList<T> unfiltered, Function<ObservableList<T>, ObservableList<T>> identity, Function<String, ObservableList<T>> search) {
         this.unfiltered = unfiltered;
-        this.query = query;
         this.identity = identity;
         this.search = search;
     }
 
-    public ObservableList<T> getFiltered() {
+    public ObservableList<T> getFiltered(String query) {
         return new StringCheck(query).isNullOrBlank() ? identity.apply(unfiltered) : search.apply(query);
     }
 }
