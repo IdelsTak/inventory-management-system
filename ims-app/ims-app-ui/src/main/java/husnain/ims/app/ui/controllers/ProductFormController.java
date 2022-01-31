@@ -2,15 +2,21 @@ package husnain.ims.app.ui.controllers;
 
 import husnain.ims.app.crud.Inventory;
 import husnain.ims.app.model.Part;
+import husnain.ims.app.model.Product;
 import husnain.ims.app.ui.controllers.utils.PropertyRatio;
 import husnain.ims.app.ui.controllers.utils.BoundablePropertyRatio;
 import husnain.ims.app.ui.controllers.utils.FormattedPriceCell;
+import husnain.ims.app.ui.controllers.utils.InputError;
 import husnain.ims.app.ui.controllers.utils.Named;
 import husnain.ims.app.ui.controllers.utils.PlaceholderLabel;
 import husnain.ims.app.ui.controllers.utils.Search;
 import husnain.ims.app.ui.controllers.utils.SearchableList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -53,13 +59,21 @@ public class ProductFormController {
     private TableView<?> assocPartsTable;
     @FXML
     private TableColumn<?, ?> assocPriceColumn;
+    private final ObservableSet<InputError> inputErrors;
+    private final Product product;
 
     public ProductFormController() {
-        this(Named.DialogType.ADD);
+        this(Named.DialogType.ADD, null);
     }
 
-    public ProductFormController(Named.DialogType type) {
+    public ProductFormController(Product product) {
+        this(Named.DialogType.MODIFY, Objects.requireNonNull(product, "Product to modify should not be null"));
+    }
+    
+    private ProductFormController(Named.DialogType type, Product product) {
         this.type = type;
+        this.product = product;
+        this.inputErrors = FXCollections.observableSet(new LinkedHashSet<>());
     }
 
     /**
@@ -67,7 +81,7 @@ public class ProductFormController {
      */
     @FXML
     void initialize() {
-        this.initTitle();
+        this.initTitle(type.toString());
         this.initFocus();
         this.initTablePlaceholders();
         this.setupColumnWidths();
@@ -102,10 +116,14 @@ public class ProductFormController {
                 partsTable.setItems(filtered);
             }
         });
+        
+        if (Objects.isNull(product)) {
+            prodIdTextField.setText("Auto Gen - Disabled");
+        } 
     }
 
-    private void initTitle() {
-        titleLabel.setText(String.format("%s Product", type.toString()));
+    private void initTitle(String typeName) {
+        titleLabel.setText(String.format("%s Product", typeName));
     }
 
     private void initFocus() {
