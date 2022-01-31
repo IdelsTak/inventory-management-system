@@ -14,6 +14,7 @@
         <module>ims-app-ui</module>
         <module>ims-app-model</module>
         <module>ims-app-crud</module>
+        <module>ims-app-sample-data</module>
     </modules>
     <build>
         <plugins>
