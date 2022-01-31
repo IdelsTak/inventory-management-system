@@ -171,6 +171,51 @@ public class PartFormController {
         errorLabel.setText(inputErrors.isEmpty() ? null : text);
     }
 
+    @FXML
+    void initialize() {
+        this.initTitle(type.toString());
+
+        companyOrMachineIdLabel.textProperty().bind(this.createFieldForProductType());
+
+        if (Objects.isNull(part)) {
+            inhouseRadioButton.setSelected(true);
+            idTextField.setText("Auto Gen - Disabled");
+        } else {
+            var inhousePart = part instanceof InHouse;
+
+            productTypeToggleGrp.selectToggle(inhousePart ? inhouseRadioButton : outsourcedRadioButton);
+
+            idTextField.setText(Integer.toString(part.getId()));
+            nameTextField.setText(part.getName());
+            stockTextField.setText(Integer.toString(part.getStock()));
+            priceTextField.setText(Double.toString(part.getPrice()));
+            maxStockTextField.setText(Integer.toString(part.getMax()));
+            minStockTextField.setText(Integer.toString(part.getMin()));
+            nameOrMachineIdTextField.setText(
+                    inhousePart
+                            ? Integer.toString(((InHouse) part).getMachineId())
+                            : ((OutSourced) part).getCompanyName()
+            );
+        }
+    }
+
+    private void initTitle(String typeName) {
+        titleLabel.setText(String.format("%s Part", typeName));
+    }
+
+    private StringBinding createFieldForProductType() {
+        return Bindings.createStringBinding(
+                () -> {
+                    var inhouseSelected = Objects.equals(
+                            inhouseRadioButton,
+                            productTypeToggleGrp.getSelectedToggle()
+                    );
+                    return inhouseSelected ? "Machine ID" : "Company Name";
+                },
+                productTypeToggleGrp.selectedToggleProperty()
+        );
+    }
+
     private void updateErrors() {
         var name = nameTextField.getText();
         var stock = stockTextField.getText();
@@ -267,51 +312,6 @@ public class PartFormController {
             inputErrors.remove(error);
             styleClass.setAll(styleClass.stream().filter(sc -> !Objects.equals(sc, INPUT_ERROR_CLASS)).toArray(String[]::new));
         }
-    }
-
-    @FXML
-    void initialize() {
-        this.initTitle(type.toString());
-
-        companyOrMachineIdLabel.textProperty().bind(this.createFieldForProductType());
-
-        if (Objects.isNull(part)) {
-            inhouseRadioButton.setSelected(true);
-            idTextField.setText("Auto Gen - Disabled");
-        } else {
-            var inhousePart = part instanceof InHouse;
-
-            productTypeToggleGrp.selectToggle(inhousePart ? inhouseRadioButton : outsourcedRadioButton);
-
-            idTextField.setText(Integer.toString(part.getId()));
-            nameTextField.setText(part.getName());
-            stockTextField.setText(Integer.toString(part.getStock()));
-            priceTextField.setText(Double.toString(part.getPrice()));
-            maxStockTextField.setText(Integer.toString(part.getMax()));
-            minStockTextField.setText(Integer.toString(part.getMin()));
-            nameOrMachineIdTextField.setText(
-                    inhousePart
-                            ? Integer.toString(((InHouse) part).getMachineId())
-                            : ((OutSourced) part).getCompanyName()
-            );
-        }
-    }
-
-    private void initTitle(String typeName) {
-        titleLabel.setText(String.format("%s Part", typeName));
-    }
-
-    private StringBinding createFieldForProductType() {
-        return Bindings.createStringBinding(
-                () -> {
-                    var inhouseSelected = Objects.equals(
-                            inhouseRadioButton,
-                            productTypeToggleGrp.getSelectedToggle()
-                    );
-                    return inhouseSelected ? "Machine ID" : "Company Name";
-                },
-                productTypeToggleGrp.selectedToggleProperty()
-        );
     }
 
 }
