@@ -25,7 +25,7 @@
                               <TextField fx:id="searchPartsTextField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="Search by Part ID or Name" />
                           </children>
                       </HBox>
-                  <Label styleClass="error-label" />
+                  <Label fx:id="partsResultsLabel" styleClass="error-label" />
                </children>
             </VBox>
                 <HBox maxHeight="1.7976931348623157E308" spacing="48.0" VBox.vgrow="ALWAYS">
