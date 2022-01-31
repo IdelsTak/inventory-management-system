@@ -74,7 +74,7 @@
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                             </columnResizePolicy>
                                         </TableView>
-                                        <Button mnemonicParsing="false" text="Add" />
+                                        <Button mnemonicParsing="false" onAction="#addAssociatedPart" text="Add" />
                                     </children>
                                 </VBox>
                                 <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" spacing="24.0">
@@ -93,7 +93,7 @@
                                         <HBox>
                                             <children>
                                                 <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                                                <Button mnemonicParsing="false" text="Remove Associated Part" />
+                                                <Button mnemonicParsing="false" onAction="#removeAssociatedPart" text="Remove Associated Part" />
                                             </children>
                                         </HBox>
                                     </children>
