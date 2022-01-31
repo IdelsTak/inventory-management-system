@@ -31,7 +31,7 @@
                                               <TextField fx:id="searchPartsTextField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Search by Part ID or Name" />
                                           </children>
                                       </HBox>
-                              <Label styleClass="error-label" />
+                              <Label fx:id="partsResultsLabel" styleClass="error-label" />
                            </children>
                         </VBox>
                                 <VBox maxHeight="1.7976931348623157E308" spacing="24.0" VBox.vgrow="ALWAYS">
@@ -71,7 +71,7 @@
                                               <TextField fx:id="searchProductsTextField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Search by Product ID or Name" />
                                           </children>
                                       </HBox>
-                              <Label styleClass="error-label" />
+                              <Label fx:id="productsResultsLabel" styleClass="error-label" />
                            </children>
                         </VBox>
                                 <VBox maxHeight="1.7976931348623157E308" spacing="24.0" VBox.vgrow="ALWAYS">
