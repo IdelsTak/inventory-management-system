@@ -84,7 +84,7 @@ public class Product {
     }
 
     public ObservableList<Part> getAllAssociatedParts() {
-        return FXCollections.unmodifiableObservableList(associatedParts);
+        return associatedParts;
     }
 
 }
