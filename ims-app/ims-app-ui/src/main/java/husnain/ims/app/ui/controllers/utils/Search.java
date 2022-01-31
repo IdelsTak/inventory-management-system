@@ -1,6 +1,5 @@
 package husnain.ims.app.ui.controllers.utils;
 
-import husnain.ims.app.crud.Inventory;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -29,18 +28,15 @@ public class Search<T> implements Function<String, ObservableList<T>> {
     public ObservableList<T> apply(String query) {
         ObservableList<T> list;
         if (new RegexCheck(query, "\\d+").doesntMatch()) {
-
-//            list = Inventory.lookupPart(query);
             list = nameSearch.apply(query);
         } else {
-            Optional<T> foundPart = Optional.empty();
+            Optional<T> o = Optional.empty();
             try {
-//                foundPart = Optional.ofNullable(Inventory.lookupPart(Integer.parseInt(query)));
-                foundPart = Optional.ofNullable(idSearch.apply(Integer.parseInt(query)));
+                o = Optional.ofNullable(idSearch.apply(Integer.parseInt(query)));
             } catch (NumberFormatException | NoSuchElementException exc) {
                 LOG.log(Level.WARNING, "An expection occured: {0}", exc.getMessage());
             }
-            list = foundPart.map(p -> FXCollections.observableArrayList(List.of(p))).orElse(FXCollections.emptyObservableList());
+            list = o.map(p -> FXCollections.observableArrayList(List.of(p))).orElse(FXCollections.emptyObservableList());
         }
         return list;
     }
