@@ -10,6 +10,7 @@ import husnain.ims.app.ui.controllers.utils.BoundablePropertyRatio;
 import husnain.ims.app.ui.controllers.utils.Named;
 import husnain.ims.app.ui.controllers.utils.PlaceholderLabel;
 import husnain.ims.app.ui.controllers.utils.Search;
+import husnain.ims.app.ui.controllers.utils.SearchListener;
 import husnain.ims.app.ui.controllers.utils.SearchableList;
 import java.io.IOException;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +32,7 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -61,9 +65,9 @@ public class MainFormController {
     @FXML
     private TableColumn<Product, String> productNameColumn;
     @FXML
-    private TableColumn<Product, Double> productPriceColumn;
-    @FXML
     private TableColumn<Product, Integer> productInvLevelColumn;
+    @FXML
+    private TableColumn<Product, Double> productPriceColumn;
 
     /**
      * Initializes the controller class.
@@ -82,27 +86,34 @@ public class MainFormController {
 
         partsTable.setItems(Inventory.getAllParts());
 
-        searchPartsTextField.textProperty().addListener((obs, oldText, newText) -> {
-            var sl = new SearchableList<Part>(
-                    Inventory.getAllParts(),
-                    newText,
-                    Function.identity(),
-                    new Search<>(Inventory::lookupPart, Inventory::lookupPart)
-            );
-            var filtered = sl.getFiltered();
+        searchPartsTextField.textProperty().addListener(new SearchListener<>(
+                        new SearchableList<>(
+                                Inventory.getAllParts(),
+                                Function.identity(),
+                                new Search<>(Inventory::lookupPart, Inventory::lookupPart)
+                        ),
+                        partsTable
+                )
+        );
 
-            if (filtered.isEmpty()) {
-                var alert = new Alert(Alert.AlertType.WARNING, null);
+        productIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        productInvLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        productPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-                alert.setHeaderText("No part found for query: \"%s\"".formatted(searchPartsTextField.getText()));
-                alert.show();
+        productPriceColumn.setCellFactory(callBck -> new FormattedPriceCell());
 
-                searchPartsTextField.setText(null);
-                partsTable.requestFocus();
-            } else {
-                partsTable.setItems(filtered);
-            }
-        });
+        productsTable.setItems(Inventory.getAllProducts());
+
+        searchProductsTextField.textProperty().addListener(new SearchListener<>(
+                        new SearchableList<>(
+                                Inventory.getAllProducts(),
+                                Function.identity(),
+                                new Search<>(Inventory::lookupProduct, Inventory::lookupProduct)
+                        ),
+                        productsTable
+                )
+        );
 
     }
 
@@ -160,7 +171,7 @@ public class MainFormController {
     @FXML
     void addProduct(ActionEvent event) {
         try {
-            this.showProductDialog(Named.DialogType.ADD);
+            this.showProductDialog(null);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
@@ -168,10 +179,43 @@ public class MainFormController {
 
     @FXML
     void modifyProduct(ActionEvent event) {
-        try {
-            this.showProductDialog(Named.DialogType.MODIFY);
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
+        var selectedProduct = productsTable.getSelectionModel().getSelectedItem();
+
+        if (Objects.isNull(selectedProduct)) {
+            var alert = new Alert(Alert.AlertType.ERROR, null);
+
+            alert.setHeaderText("Can't modify. No product is selected.");
+            alert.show();
+        } else {
+            try {
+                this.showProductDialog(selectedProduct);
+            } catch (IOException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @FXML
+    void deleteProduct(ActionEvent event) {
+        var selectedProduct = productsTable.getSelectionModel().getSelectedItem();
+
+        if (Objects.isNull(selectedProduct)) {
+            var alert = new Alert(Alert.AlertType.ERROR, null);
+
+            alert.setHeaderText("Can't delete. No product is selected.");
+            alert.show();
+        } else {
+            var yesBtn = new ButtonType("Yes", ButtonBar.ButtonData.NO);
+            var noBtn = new ButtonType("No", ButtonBar.ButtonData.OK_DONE);
+
+            var alert = new Alert(Alert.AlertType.CONFIRMATION, null, yesBtn, noBtn);
+
+            alert.setTitle("Delete");
+            alert.setHeaderText(String.format("Deleting the product \"%s\" is non-reversible. Continue?", selectedProduct.getName()));
+
+            alert.showAndWait()
+                    .filter(btn -> Objects.equals(btn, yesBtn))
+                    .ifPresent(btn -> Inventory.deleteProduct(selectedProduct));
         }
     }
 
@@ -229,11 +273,14 @@ public class MainFormController {
         return null;
     }
 
-    private void showProductDialog(Named.DialogType type) throws IOException {
+    private void showProductDialog(Product selectedProduct) throws IOException {
+        var index = Inventory.getAllProducts().indexOf(selectedProduct);
+        var add = Objects.isNull(selectedProduct);
         var url = InventoryManagementApp.class.getResource("ProductForm.fxml");
         var loader = new FXMLLoader(url);
+        var controller = add ? new ProductFormController() : new ProductFormController(selectedProduct);
 
-        loader.setController(new ProductFormController());
+        loader.setController(controller);
 
         var dlg = (DialogPane) loader.load();
         var alert = new Alert(Alert.AlertType.NONE);
@@ -241,6 +288,21 @@ public class MainFormController {
 
         dlg.getButtonTypes().setAll(saveBtn, ButtonType.CANCEL);
         alert.setDialogPane(dlg);
+
+        var saveButton = (Button) dlg.lookupButton(saveBtn);
+
+        saveButton.addEventFilter(ActionEvent.ACTION, handler -> {
+            if (!controller.getInputErrors().isEmpty()) {
+                handler.consume();
+                controller.updateErrorText();
+            } else {
+                if (add) {
+                    Inventory.addProduct(controller.getProduct());
+                } else {
+                    Inventory.updateProduct(index, controller.getProduct());
+                }
+            }
+        });
 
         alert.show();
     }
@@ -277,6 +339,41 @@ public class MainFormController {
         });
 
         alert.show();
+    }
+
+    private class ChangeListenerImpl implements ChangeListener<String> {
+
+        private SearchableList<Product> sl;
+        private final TextInputControl searchControl;
+        private final TableView<Product> table;
+
+        public ChangeListenerImpl(TextInputControl searchControl, TableView<Product> table) {
+            this.searchControl = searchControl;
+            this.table = table;
+        }
+
+        @Override
+        public void changed(ObservableValue<? extends String> obs, String oldText, String newText) {
+            var sl = new SearchableList<Product>(
+                    Inventory.getAllProducts(),
+                    Function.identity(),
+                    new Search<>(Inventory::lookupProduct, Inventory::lookupProduct)
+            );
+            var filtered = sl.getFiltered(newText);
+
+            if (filtered.isEmpty()) {
+                var alert = new Alert(Alert.AlertType.WARNING, null);
+
+                alert.setHeaderText("No product found for query \"%s\"".formatted(searchPartsTextField.getText()));
+                alert.show();
+
+                searchControl.setText(null);
+                table.requestFocus();
+            } else {
+                table.setItems(filtered);
+            }
+        }
+
     }
 
 }
