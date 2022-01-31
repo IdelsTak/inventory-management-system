@@ -37,7 +37,10 @@ public class Search<T> implements Function<String, ObservableList<T>> {
             } catch (NumberFormatException | NoSuchElementException exc) {
                 LOG.log(Level.WARNING, "An expection occured: {0}", exc.getMessage());
             }
-            list = o.map(p -> FXCollections.observableArrayList(List.of(p))).orElse(FXCollections.emptyObservableList());
+
+            list = o.map(List::of)
+                    .map(FXCollections::observableList)
+                    .orElse(FXCollections.emptyObservableList());
         }
         return list;
     }
