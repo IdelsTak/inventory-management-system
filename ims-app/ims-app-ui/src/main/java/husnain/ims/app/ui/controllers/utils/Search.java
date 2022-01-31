@@ -27,6 +27,7 @@ public class Search<T> implements Function<String, ObservableList<T>> {
     @Override
     public ObservableList<T> apply(String query) {
         ObservableList<T> list;
+        
         if (new RegexCheck(query, "\\d+").doesntMatch()) {
             list = nameSearch.apply(query);
         } else {
@@ -42,6 +43,7 @@ public class Search<T> implements Function<String, ObservableList<T>> {
                     .map(FXCollections::observableList)
                     .orElse(FXCollections.emptyObservableList());
         }
+        
         return list;
     }
 
