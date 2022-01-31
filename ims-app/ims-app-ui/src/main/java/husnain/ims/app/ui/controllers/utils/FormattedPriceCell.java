@@ -1,6 +1,5 @@
 package husnain.ims.app.ui.controllers.utils;
 
-import husnain.ims.app.model.Part;
 import java.util.Objects;
 import javafx.scene.control.TableCell;
 
@@ -8,7 +7,7 @@ import javafx.scene.control.TableCell;
  *
  * @author Husnain Arif
  */
-public class FormattedPriceCell extends TableCell<Part, Double> {
+public class FormattedPriceCell<T> extends TableCell<T, Double> {
 
     @Override
     protected void updateItem(Double price, boolean empty) {
