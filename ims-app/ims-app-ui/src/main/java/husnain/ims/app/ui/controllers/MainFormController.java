@@ -233,7 +233,7 @@ public class MainFormController {
         var url = InventoryManagementApp.class.getResource("ProductForm.fxml");
         var loader = new FXMLLoader(url);
 
-        loader.setController(new ProductFormController(type));
+        loader.setController(new ProductFormController());
 
         var dlg = (DialogPane) loader.load();
         var alert = new Alert(Alert.AlertType.NONE);
@@ -242,7 +242,7 @@ public class MainFormController {
         dlg.getButtonTypes().setAll(saveBtn, ButtonType.CANCEL);
         alert.setDialogPane(dlg);
 
-        alert.showAndWait();
+        alert.show();
     }
 
     private void showPartDialog(Part selectedPart) throws IOException {
