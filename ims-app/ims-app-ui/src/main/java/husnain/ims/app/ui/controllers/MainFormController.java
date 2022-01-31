@@ -28,6 +28,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -46,6 +47,8 @@ public class MainFormController {
     @FXML
     private TextField searchPartsTextField;
     @FXML
+    private Label partsResultsLabel;
+    @FXML
     private TableView<Part> partsTable;
     @FXML
     private TableColumn<Part, Integer> partIdColumn;
@@ -59,6 +62,8 @@ public class MainFormController {
     private Button addPartButton;
     @FXML
     private TextField searchProductsTextField;
+    @FXML
+    private Label productsResultsLabel;
     @FXML
     private TableView<Product> productsTable;
     @FXML
@@ -95,6 +100,7 @@ public class MainFormController {
                         new Search<>(Inventory::lookupPart, Inventory::lookupPart)
                 ),
                 searchPartsTextField,
+                partsResultsLabel,
                 partsTable
         )
         );
@@ -115,6 +121,7 @@ public class MainFormController {
                         new Search<>(Inventory::lookupProduct, Inventory::lookupProduct)
                 ),
                 searchProductsTextField,
+                productsResultsLabel,
                 productsTable
         )
         );
