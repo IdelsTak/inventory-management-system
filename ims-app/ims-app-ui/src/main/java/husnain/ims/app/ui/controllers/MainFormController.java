@@ -83,13 +83,15 @@ public class MainFormController {
         partsTable.setItems(Inventory.getAllParts());
 
         searchPartsTextField.textProperty().addListener((obs, oldText, newText) -> {
-            SearchableList<Part> sl = new SearchableList<>(
+            var sl = new SearchableList<Part>(
                     Inventory.getAllParts(),
                     newText,
                     Function.identity(),
                     new Search<>(Inventory::lookupPart, Inventory::lookupPart)
             );
-            partsTable.setItems(sl.getFiltered());
+            var filtered = sl.getFiltered();
+
+            partsTable.setItems(filtered);
         });
 
     }
@@ -223,8 +225,7 @@ public class MainFormController {
 
         loader.setController(new ProductFormController(type));
 
-        DialogPane dlg = loader.load();
-
+        var dlg = (DialogPane) loader.load();
         var alert = new Alert(Alert.AlertType.NONE);
         var saveBtn = new ButtonType("Save", ButtonBar.ButtonData.YES);
 
@@ -243,13 +244,11 @@ public class MainFormController {
 
         loader.setController(controller);
 
-        DialogPane dlg = loader.load();
-
+        var dlg = (DialogPane) loader.load();
         var alert = new Alert(Alert.AlertType.NONE);
         var saveBtn = new ButtonType("Save", ButtonBar.ButtonData.YES);
 
         dlg.getButtonTypes().setAll(saveBtn, ButtonType.CANCEL);
-
         alert.setDialogPane(dlg);
 
         var saveButton = (Button) dlg.lookupButton(saveBtn);
