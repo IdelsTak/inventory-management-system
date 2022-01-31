@@ -25,7 +25,7 @@
                 </HBox>
                 <HBox maxHeight="1.7976931348623157E308" spacing="48.0" VBox.vgrow="ALWAYS">
                     <children>
-                        <VBox HBox.hgrow="NEVER">
+                        <VBox spacing="24.0" HBox.hgrow="NEVER">
                             <children>
                                 <GridPane hgap="12.0" vgap="12.0">
                                     <columnConstraints>
@@ -45,17 +45,18 @@
                                         <Label text="ID" />
                                         <TextField fx:id="prodIdTextField" disable="true" editable="false" style="-fx-font-style: italic;" GridPane.columnIndex="1" GridPane.columnSpan="2" />
                                         <Label text="Name" GridPane.rowIndex="1" />
-                                        <TextField GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                                        <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                                         <Label text="Inv" GridPane.rowIndex="2" />
-                                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <TextField fx:id="stockTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                         <Label text="Price" GridPane.rowIndex="3" />
-                                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <TextField fx:id="priceTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                         <Label text="Max" GridPane.rowIndex="4" />
-                                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                        <TextField fx:id="maxStockTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                         <Label text="Min" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                        <TextField GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                        <TextField fx:id="minStockTextField" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                                     </children>
                                 </GridPane>
+                        <Label fx:id="errorLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: red;" VBox.vgrow="ALWAYS" />
                             </children>
                         </VBox>
                         <VBox maxWidth="1.7976931348623157E308" spacing="48.0" HBox.hgrow="ALWAYS">
