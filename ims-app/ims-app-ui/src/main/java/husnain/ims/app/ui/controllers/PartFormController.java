@@ -54,34 +54,34 @@ public class PartFormController {
     private static final String DOUBLES_REGEX = "\\d+|\\d+\\.\\d+";
     private static final String INTEGERS_REGEX = "\\d+";
     private final Named.DialogType type;
+    private final Part part;
+    private final ObservableSet<InputError> inputErrors;
     @FXML
     private Label titleLabel;
     @FXML
     private RadioButton inhouseRadioButton;
     @FXML
+    private RadioButton outsourcedRadioButton;
+    @FXML
+    private ToggleGroup productTypeToggleGrp;
+    @FXML
     private TextField idTextField;
+    @FXML
+    private TextField nameTextField;
+    @FXML
+    private TextField stockTextField;
+    @FXML
+    private TextField priceTextField;
     @FXML
     private TextField maxStockTextField;
     @FXML
     private TextField minStockTextField;
     @FXML
-    private TextField nameOrMachineIdTextField;
-    @FXML
-    private TextField nameTextField;
-    @FXML
-    private RadioButton outsourcedRadioButton;
-    @FXML
-    private TextField priceTextField;
-    @FXML
-    private ToggleGroup productTypeToggleGrp;
-    @FXML
-    private TextField stockTextField;
-    @FXML
     private Label companyOrMachineIdLabel;
     @FXML
+    private TextField nameOrMachineIdTextField;
+    @FXML
     private Label errorLabel;
-    private final Part part;
-    private final ObservableSet<InputError> inputErrors;
 
     public PartFormController() {
         this(Named.DialogType.ADD, null);
