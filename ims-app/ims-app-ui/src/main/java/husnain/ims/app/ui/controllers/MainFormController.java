@@ -7,7 +7,6 @@ import husnain.ims.app.model.Product;
 import husnain.ims.app.ui.InventoryManagementApp;
 import husnain.ims.app.ui.controllers.utils.PropertyRatio;
 import husnain.ims.app.ui.controllers.utils.BoundablePropertyRatio;
-import husnain.ims.app.ui.controllers.utils.Named;
 import husnain.ims.app.ui.controllers.utils.PlaceholderLabel;
 import husnain.ims.app.ui.controllers.utils.Search;
 import husnain.ims.app.ui.controllers.utils.SearchListener;
@@ -20,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -129,7 +129,7 @@ public class MainFormController {
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
-        
+
         event.consume();
     }
 
@@ -149,7 +149,7 @@ public class MainFormController {
                 LOG.log(Level.SEVERE, null, ex);
             }
         }
-        
+
         event.consume();
     }
 
@@ -175,7 +175,7 @@ public class MainFormController {
                     .filter(btn -> Objects.equals(btn, yesBtn))
                     .ifPresent(btn -> Inventory.deletePart(selectedPart));
         }
-        
+
         event.consume();
     }
 
@@ -186,7 +186,7 @@ public class MainFormController {
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
-        
+
         event.consume();
     }
 
@@ -206,7 +206,7 @@ public class MainFormController {
                 LOG.log(Level.SEVERE, null, ex);
             }
         }
-        
+
         event.consume();
     }
 
@@ -220,19 +220,28 @@ public class MainFormController {
             alert.setHeaderText("Can't delete. No product is selected.");
             alert.show();
         } else {
-            var yesBtn = new ButtonType("Yes", ButtonBar.ButtonData.NO);
-            var noBtn = new ButtonType("No", ButtonBar.ButtonData.OK_DONE);
+            var assocParts = selectedProduct.getAllAssociatedParts();
+            
+            if (assocParts.isEmpty()) {
+                var yesBtn = new ButtonType("Yes", ButtonBar.ButtonData.NO);
+                var noBtn = new ButtonType("No", ButtonBar.ButtonData.OK_DONE);
 
-            var alert = new Alert(Alert.AlertType.CONFIRMATION, null, yesBtn, noBtn);
+                var alert = new Alert(Alert.AlertType.CONFIRMATION, null, yesBtn, noBtn);
 
-            alert.setTitle("Delete");
-            alert.setHeaderText(String.format("Deleting the product \"%s\" is non-reversible. Continue?", selectedProduct.getName()));
+                alert.setTitle("Delete");
+                alert.setHeaderText(String.format("Deleting the product \"%s\" is non-reversible. Continue?", selectedProduct.getName()));
 
-            alert.showAndWait()
-                    .filter(btn -> Objects.equals(btn, yesBtn))
-                    .ifPresent(btn -> Inventory.deleteProduct(selectedProduct));
+                alert.showAndWait()
+                        .filter(btn -> Objects.equals(btn, yesBtn))
+                        .ifPresent(btn -> Inventory.deleteProduct(selectedProduct));
+            } else {
+                var alert = new Alert(Alert.AlertType.ERROR, null);
+
+                alert.setHeaderText("Can't delete. Product has associated %d part(s).".formatted(assocParts.size()));
+                alert.show();
+            }
         }
-        
+
         event.consume();
     }
 
