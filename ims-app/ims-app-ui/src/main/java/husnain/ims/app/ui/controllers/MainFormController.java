@@ -9,9 +9,12 @@ import husnain.ims.app.ui.controllers.utils.PropertyRatio;
 import husnain.ims.app.ui.controllers.utils.BoundablePropertyRatio;
 import husnain.ims.app.ui.controllers.utils.Named;
 import husnain.ims.app.ui.controllers.utils.PlaceholderLabel;
+import husnain.ims.app.ui.controllers.utils.Search;
+import husnain.ims.app.ui.controllers.utils.SearchableList;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -50,6 +53,8 @@ public class MainFormController {
     @FXML
     private TableColumn<Part, Integer> partInvLevelColumn;
     @FXML
+    private TextField searchProductsTextField;
+    @FXML
     private TableView<Product> productsTable;
     @FXML
     private TableColumn<Product, Integer> productIdColumn;
@@ -76,6 +81,17 @@ public class MainFormController {
         partPriceColumn.setCellFactory(callBck -> new FormattedPriceCell());
 
         partsTable.setItems(Inventory.getAllParts());
+
+        searchPartsTextField.textProperty().addListener((obs, oldText, newText) -> {
+            SearchableList<Part> sl = new SearchableList<>(
+                    Inventory.getAllParts(),
+                    newText,
+                    Function.identity(),
+                    new Search<>(Inventory::lookupPart, Inventory::lookupPart)
+            );
+            partsTable.setItems(sl.getFiltered());
+        });
+
     }
 
     @FXML
@@ -150,14 +166,6 @@ public class MainFormController {
     @FXML
     void exitApplication(ActionEvent event) {
         this.showExitDialog(event);
-    }
-
-    private boolean partFound(Part part, String query) {
-        var lcQuery = query.toLowerCase();
-        var name = part.getName();
-        var lcName = name.toLowerCase();
-
-        return lcQuery.equals(Integer.toString(part.getId())) || lcName.contains(lcQuery);
     }
 
     private void initTablePlaceholders() {
