@@ -91,7 +91,17 @@ public class MainFormController {
             );
             var filtered = sl.getFiltered();
 
-            partsTable.setItems(filtered);
+            if (filtered.isEmpty()) {
+                var alert = new Alert(Alert.AlertType.WARNING, null);
+
+                alert.setHeaderText("No part found for query: \"%s\"".formatted(searchPartsTextField.getText()));
+                alert.show();
+
+                searchPartsTextField.setText(null);
+                partsTable.requestFocus();
+            } else {
+                partsTable.setItems(filtered);
+            }
         });
 
     }
