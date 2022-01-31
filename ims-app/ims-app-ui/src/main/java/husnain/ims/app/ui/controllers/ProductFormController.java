@@ -1,7 +1,10 @@
 package husnain.ims.app.ui.controllers;
 
+import husnain.ims.app.crud.Inventory;
+import husnain.ims.app.model.Part;
 import husnain.ims.app.ui.controllers.utils.PropertyRatio;
 import husnain.ims.app.ui.controllers.utils.BoundablePropertyRatio;
+import husnain.ims.app.ui.controllers.utils.FormattedPriceCell;
 import husnain.ims.app.ui.controllers.utils.Named;
 import husnain.ims.app.ui.controllers.utils.PlaceholderLabel;
 import java.util.List;
@@ -10,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * FXML Controller class
@@ -24,6 +28,16 @@ public class ProductFormController {
     @FXML
     private TextField prodIdTextField;
     @FXML
+    private TableView<Part> partsTable;
+    @FXML
+    private TableColumn<Part, Integer> partIdColumn;
+    @FXML
+    private TableColumn<Part, String> partNameColumn;
+    @FXML
+    private TableColumn<Part, Integer> partInvLevelColumn;
+    @FXML
+    private TableColumn<Part, Double> partPriceColumn;
+    @FXML
     private TableColumn<?, ?> assocInvLevelColumn;
     @FXML
     private TableColumn<?, ?> assocPartIdColumn;
@@ -33,16 +47,6 @@ public class ProductFormController {
     private TableView<?> assocPartsTable;
     @FXML
     private TableColumn<?, ?> assocPriceColumn;
-    @FXML
-    private TableColumn<?, ?> invLevelColumn;
-    @FXML
-    private TableColumn<?, ?> partIdColumn;
-    @FXML
-    private TableColumn<?, ?> partNameColumn;
-    @FXML
-    private TableView<?> partsTable;
-    @FXML
-    private TableColumn<?, ?> priceColumn;
 
     public ProductFormController() {
         this(Named.DialogType.ADD);
@@ -61,6 +65,15 @@ public class ProductFormController {
         this.initFocus();
         this.initTablePlaceholders();
         this.setupColumnWidths();
+
+        partIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        partNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        partInvLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        partPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        partPriceColumn.setCellFactory(callBck -> new FormattedPriceCell());
+
+        partsTable.setItems(Inventory.getAllParts());
     }
 
     private void initTitle() {
@@ -82,8 +95,8 @@ public class ProductFormController {
                         partsTable.widthProperty(),
                         List.of(new PropertyRatio(partIdColumn.maxWidthProperty(), 0.11),
                                 new PropertyRatio(partNameColumn.maxWidthProperty(), 0.38),
-                                new PropertyRatio(invLevelColumn.maxWidthProperty(), 0.22),
-                                new PropertyRatio(priceColumn.maxWidthProperty(), 0.28)
+                                new PropertyRatio(partInvLevelColumn.maxWidthProperty(), 0.22),
+                                new PropertyRatio(partPriceColumn.maxWidthProperty(), 0.28)
                         )
                 )
         );
