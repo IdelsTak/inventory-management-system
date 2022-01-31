@@ -56,7 +56,7 @@
                                         <TextField fx:id="minStockTextField" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                                     </children>
                                 </GridPane>
-                        <Label fx:id="errorLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: red;" VBox.vgrow="ALWAYS" />
+                                <Label fx:id="errorLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: red;" VBox.vgrow="ALWAYS" />
                             </children>
                         </VBox>
                         <VBox maxWidth="1.7976931348623157E308" spacing="48.0" HBox.hgrow="ALWAYS">
