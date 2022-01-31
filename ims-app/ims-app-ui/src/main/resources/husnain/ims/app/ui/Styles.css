@@ -60,3 +60,9 @@
 .text-input:error {
     -fx-base: derive(red, 99%);
 }
+
+.error-label {
+    -fx-text-fill: red;
+    -fx-alignment: CENTER_RIGHT;
+    -fx-max-width: Infinity;
+}
