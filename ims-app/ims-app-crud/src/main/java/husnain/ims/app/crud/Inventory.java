@@ -72,8 +72,8 @@ public class Inventory {
     }
 
     /**
-     * Searches the cache of {@code Product} objects for a {@code Part} instance
-     * with the specified {@code id}.
+     * Searches the cache of {@code Product} objects for a {@code Product}
+     * instance with the specified {@code id}.
      * <p>
      * If it finds it, it returns it -- otherwise, it throws a
      * {@link NoSuchElementException}.
@@ -92,6 +92,18 @@ public class Inventory {
         return allProducts.stream().filter(product -> Objects.equals(product.getId(), productId)).findFirst().orElseThrow();
     }
 
+    /**
+     * Searches the cache of {@code Part} objects for a {@code Part}
+     * instances whose names contain the specified {@link Part#name}.
+     * <p>
+     * This method never returns {@code null}. If the search is unsuccessful, it
+     * returns an empty {@link FXCollections#observableArrayList()} that's empty
+     * instead.
+     *
+     * @param partName
+     *
+     * @return 
+     */
     public static ObservableList<Part> lookupPart(String partName) {
         return allParts.stream()
                 .filter(part -> part.getName().toLowerCase().contains(partName.toLowerCase()))
