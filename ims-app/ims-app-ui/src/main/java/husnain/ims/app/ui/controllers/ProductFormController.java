@@ -136,18 +136,16 @@ public class ProductFormController {
 
             modifiedProduct = new Product(id, name, price, stock, minStock, maxStock);
             //Add the parts that we're chosen in this form
-            associatedParts.stream().forEachOrdered(modifiedProduct::addAssociatedPart);
+            modifiedProduct.getAllAssociatedParts().setAll(associatedParts);
         } else {
             product.setName(name);
             product.setStock(stock);
             product.setPrice(price);
             product.setMax(maxStock);
             product.setMin(minStock);
-            //First, remove all the existing parts
-            List<Boolean> deleted = product.getAllAssociatedParts().stream().map(product::deleteAssociatedPart).collect(Collectors.toList());
-            LOG.log(Level.INFO, "Deleted: {0}", deleted);
-            //Then, add the parts that we're chosen in this form
-            associatedParts.stream().forEachOrdered(product::addAssociatedPart);
+
+            //Add the parts that we're chosen in this form
+            product.getAllAssociatedParts().setAll(associatedParts);
 
             modifiedProduct = product;
         }
