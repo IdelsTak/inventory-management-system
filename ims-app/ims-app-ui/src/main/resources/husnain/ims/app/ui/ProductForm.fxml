@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<DialogPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<DialogPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <content>
         <VBox spacing="24.0" styleClass="main-pane">
             <children>
@@ -23,7 +23,7 @@
                         <TextField fx:id="searchPartsTextField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="Search by Part ID or Name" />
                     </children>
                 </HBox>
-                <HBox maxHeight="1.7976931348623157E308" spacing="18.0" VBox.vgrow="ALWAYS">
+                <HBox maxHeight="1.7976931348623157E308" spacing="48.0" VBox.vgrow="ALWAYS">
                     <children>
                         <VBox HBox.hgrow="NEVER">
                             <children>
@@ -43,7 +43,7 @@
                                     </rowConstraints>
                                     <children>
                                         <Label text="ID" />
-                                        <TextField fx:id="prodIdTextField" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                                        <TextField fx:id="prodIdTextField" disable="true" editable="false" style="-fx-font-style: italic;" GridPane.columnIndex="1" GridPane.columnSpan="2" />
                                         <Label text="Name" GridPane.rowIndex="1" />
                                         <TextField GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                                         <Label text="Inv" GridPane.rowIndex="2" />
