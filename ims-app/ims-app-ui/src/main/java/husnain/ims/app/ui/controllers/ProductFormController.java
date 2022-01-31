@@ -281,7 +281,7 @@ public class ProductFormController {
                         List.of(new PropertyRatio(partIdColumn.maxWidthProperty(), 0.11),
                                 new PropertyRatio(partNameColumn.maxWidthProperty(), 0.38),
                                 new PropertyRatio(partInvLevelColumn.maxWidthProperty(), 0.22),
-                                new PropertyRatio(partPriceColumn.maxWidthProperty(), 0.28)
+                                new PropertyRatio(partPriceColumn.maxWidthProperty(), 0.26)
                         )
                 )
         );
@@ -292,7 +292,7 @@ public class ProductFormController {
                         List.of(new PropertyRatio(assocPartIdColumn.maxWidthProperty(), 0.11),
                                 new PropertyRatio(assocPartNameColumn.maxWidthProperty(), 0.38),
                                 new PropertyRatio(assocInvLevelColumn.maxWidthProperty(), 0.22),
-                                new PropertyRatio(assocPriceColumn.maxWidthProperty(), 0.28)
+                                new PropertyRatio(assocPriceColumn.maxWidthProperty(), 0.26)
                         )
                 )
         );
