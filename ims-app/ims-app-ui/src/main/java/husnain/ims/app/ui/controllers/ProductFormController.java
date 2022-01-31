@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -196,6 +197,16 @@ public class ProductFormController {
             maxStockTextField.setText(Integer.toString(product.getMax()));
             minStockTextField.setText(Integer.toString(product.getMin()));
         }
+    }
+
+    @FXML
+    void addAssociatedPart(ActionEvent event) {
+        event.consume();
+    }
+
+    @FXML
+    void removeAssociatedPart(ActionEvent event) {
+        event.consume();
     }
 
     private void initTitle(String typeName) {
