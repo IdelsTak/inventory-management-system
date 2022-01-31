@@ -176,13 +176,14 @@ public class ProductFormController {
         partsTable.setItems(Inventory.getAllParts());
 
         searchPartsTextField.textProperty().addListener(new SearchListener<>(
-                        new SearchableList<>(
-                                Inventory.getAllParts(),
-                                Function.identity(),
-                                new Search<>(Inventory::lookupPart, Inventory::lookupPart)
-                        ),
-                        partsTable
-                )
+                new SearchableList<>(
+                        Inventory.getAllParts(),
+                        Function.identity(),
+                        new Search<>(Inventory::lookupPart, Inventory::lookupPart)
+                ),
+                searchPartsTextField,
+                partsTable
+        )
         );
 
         if (Objects.isNull(product)) {
@@ -202,7 +203,7 @@ public class ProductFormController {
     }
 
     private void initFocus() {
-        prodIdTextField.skinProperty().addListener((o) -> prodIdTextField.requestFocus());
+        nameTextField.skinProperty().addListener(o -> nameTextField.requestFocus());
     }
 
     private void initTablePlaceholders() {
