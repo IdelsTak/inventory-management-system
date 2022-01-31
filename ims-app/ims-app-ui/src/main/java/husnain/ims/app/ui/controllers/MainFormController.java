@@ -235,9 +235,9 @@ public class MainFormController {
                         .filter(btn -> Objects.equals(btn, yesBtn))
                         .ifPresent(btn -> Inventory.deleteProduct(selectedProduct));
             } else {
-                var alert = new Alert(Alert.AlertType.ERROR, null);
+                var alert = new Alert(Alert.AlertType.WARNING, null);
 
-                alert.setHeaderText("Can't delete. Product has associated %d part(s).".formatted(assocParts.size()));
+                alert.setHeaderText("Shouldn't delete. Product has associated %d part(s).".formatted(assocParts.size()));
                 alert.show();
             }
         }
