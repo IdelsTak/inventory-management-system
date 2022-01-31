@@ -88,6 +88,8 @@ public class ProductFormController {
     @FXML
     private TextField searchPartsTextField;
     @FXML
+    private Label partsResultsLabel;
+    @FXML
     private TableView<Part> partsTable;
     @FXML
     private TableColumn<Part, Integer> partIdColumn;
@@ -194,6 +196,7 @@ public class ProductFormController {
                         new Search<>(Inventory::lookupPart, Inventory::lookupPart)
                 ),
                 searchPartsTextField,
+                partsResultsLabel,
                 partsTable
         ));
 
