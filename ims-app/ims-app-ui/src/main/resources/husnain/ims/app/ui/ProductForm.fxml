@@ -17,12 +17,17 @@
     <content>
         <VBox spacing="24.0" styleClass="main-pane">
             <children>
-                <HBox alignment="CENTER_LEFT">
-                    <children>
-                        <Label fx:id="titleLabel" maxWidth="1.7976931348623157E308" style="-fx-font-weight: 700;" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="searchPartsTextField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="Search by Part ID or Name" />
-                    </children>
-                </HBox>
+            <VBox spacing="6.0">
+               <children>
+                      <HBox alignment="CENTER_LEFT">
+                          <children>
+                              <Label fx:id="titleLabel" maxWidth="1.7976931348623157E308" style="-fx-font-weight: 700;" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="searchPartsTextField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="Search by Part ID or Name" />
+                          </children>
+                      </HBox>
+                  <Label styleClass="error-label" />
+               </children>
+            </VBox>
                 <HBox maxHeight="1.7976931348623157E308" spacing="48.0" VBox.vgrow="ALWAYS">
                     <children>
                         <VBox spacing="24.0" HBox.hgrow="NEVER">
