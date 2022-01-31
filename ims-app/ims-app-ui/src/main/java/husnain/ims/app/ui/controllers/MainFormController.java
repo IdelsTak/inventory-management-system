@@ -19,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -221,7 +220,7 @@ public class MainFormController {
             alert.show();
         } else {
             var assocParts = selectedProduct.getAllAssociatedParts();
-            
+
             if (assocParts.isEmpty()) {
                 var yesBtn = new ButtonType("Yes", ButtonBar.ButtonData.NO);
                 var noBtn = new ButtonType("No", ButtonBar.ButtonData.OK_DONE);
