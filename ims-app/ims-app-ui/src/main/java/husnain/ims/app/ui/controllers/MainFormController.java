@@ -129,6 +129,8 @@ public class MainFormController {
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
+        
+        event.consume();
     }
 
     @FXML
@@ -147,6 +149,8 @@ public class MainFormController {
                 LOG.log(Level.SEVERE, null, ex);
             }
         }
+        
+        event.consume();
     }
 
     @FXML
@@ -171,6 +175,8 @@ public class MainFormController {
                     .filter(btn -> Objects.equals(btn, yesBtn))
                     .ifPresent(btn -> Inventory.deletePart(selectedPart));
         }
+        
+        event.consume();
     }
 
     @FXML
@@ -180,6 +186,8 @@ public class MainFormController {
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
+        
+        event.consume();
     }
 
     @FXML
@@ -198,6 +206,8 @@ public class MainFormController {
                 LOG.log(Level.SEVERE, null, ex);
             }
         }
+        
+        event.consume();
     }
 
     @FXML
@@ -222,6 +232,8 @@ public class MainFormController {
                     .filter(btn -> Objects.equals(btn, yesBtn))
                     .ifPresent(btn -> Inventory.deleteProduct(selectedProduct));
         }
+        
+        event.consume();
     }
 
     @FXML
@@ -278,6 +290,8 @@ public class MainFormController {
         var stage = (Stage) source.getScene().getWindow();
         //Close the application
         stage.close();
+        //Stop further propagation of the action
+        event.consume();
         //There's nothing to return
         return null;
     }
