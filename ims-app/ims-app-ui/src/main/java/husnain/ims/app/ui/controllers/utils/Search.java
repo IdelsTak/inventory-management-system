@@ -30,7 +30,8 @@ public class Search<T> implements Function<String, ObservableList<T>> {
         if (new RegexCheck(query, "\\d+").doesntMatch()) {
             list = nameSearch.apply(query);
         } else {
-            Optional<T> o = Optional.empty();
+            var o = (Optional<T>) Optional.empty();
+
             try {
                 o = Optional.ofNullable(idSearch.apply(Integer.parseInt(query)));
             } catch (NumberFormatException | NoSuchElementException exc) {
