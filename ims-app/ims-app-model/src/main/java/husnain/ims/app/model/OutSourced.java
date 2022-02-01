@@ -9,7 +9,6 @@ package husnain.ims.app.model;
  * {@link Collection} implementations that depend on equality tests for adding
  * and removing elements.
  * <p>
- * <p>
  * This class represents a product part that's outsourced from other companies.
  *
  * @author Husnain Arif
