@@ -161,14 +161,22 @@ public class Inventory {
      * Yet, to achieve this, it simply replaces the {@code Product} instance in
      * cache with the supplied {@code Product} instance.
      *
-     * @param index      the location of the {@code Part} instance in cache that
-     *                   will be updated with new field values.
-     * @param newProduct
+     * @param index      the location of the {@code Product} instance in cache
+     *                   that will be updated with new field values.
+     * @param newProduct the {@code Part} object that will supply the specified
+     *                   cache index with an instance of itself.
      */
     public static void updateProduct(int index, Product newProduct) {
         allProducts.set(index, newProduct);
     }
 
+    /**
+     * Removes the specified {@code Part} from cache.
+     *
+     * @param selectedPart
+     *
+     * @return
+     */
     public static boolean deletePart(Part selectedPart) {
         return allParts.remove(selectedPart);
     }
