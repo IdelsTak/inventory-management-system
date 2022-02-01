@@ -13,9 +13,9 @@ public class SearchableList<T> {
     private final Function<ObservableList<T>, ObservableList<T>> identity;
     private final Function<String, ObservableList<T>> search;
 
-    public SearchableList(ObservableList<T> unfiltered, Function<ObservableList<T>, ObservableList<T>> identity, Function<String, ObservableList<T>> search) {
+    public SearchableList(ObservableList<T> unfiltered, Function<String, ObservableList<T>> search) {
         this.unfiltered = unfiltered;
-        this.identity = identity;
+        this.identity = Function.identity();
         this.search = search;
     }
 
