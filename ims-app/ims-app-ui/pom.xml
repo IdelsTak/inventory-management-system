@@ -87,7 +87,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
-                            <mainClass>husnain.ims.app.ui.AppLaunch</mainClass>
+                            <mainClass>husnain.ims.app.ui.Launcher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
