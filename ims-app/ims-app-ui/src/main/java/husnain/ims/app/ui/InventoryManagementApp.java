@@ -10,10 +10,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * FUTURE ENHANCEMENT:
- * <p>
- * This class should be used to start the application if the JavaFX modules are
- * declared correctly as VM options.
+ * FUTURE ENHANCEMENT: This class should be used to start the application if the
+ * JavaFX modules are declared correctly as VM options.
  *
  * @author Husnain Arif
  */
