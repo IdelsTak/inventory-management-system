@@ -1,12 +1,11 @@
 package husnain.ims.app.model;
 
 /**
- * FUTURE ENHANCEMENT:
- * <p>
- * This class needs equality tests (that is, the implementation of
+ * FUTURE ENHANCEMENT: This class needs equality tests (that is, the
+ * implementation of
  * {@link Object#equals(java.lang.Object) equals} and
  * {@link Object#hashCode() hashCode}) so that it can be used in
- * {@link Collection} implementations that depend on equality tests for adding
+ * {@code Collection} implementations that depend on equality tests for adding
  * and removing elements.
  * <p>
  * This class represents a product part that's outsourced from other companies.
