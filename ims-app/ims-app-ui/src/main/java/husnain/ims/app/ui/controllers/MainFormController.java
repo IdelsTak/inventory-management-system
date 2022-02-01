@@ -96,7 +96,6 @@ public class MainFormController {
         searchPartsTextField.textProperty().addListener(new SearchListener<>(
                 new SearchableList<>(
                         Inventory.getAllParts(),
-                        Function.identity(),
                         new Search<>(Inventory::lookupPart, Inventory::lookupPart)
                 ),
                 searchPartsTextField,
@@ -117,7 +116,6 @@ public class MainFormController {
         searchProductsTextField.textProperty().addListener(new SearchListener<>(
                 new SearchableList<>(
                         Inventory.getAllProducts(),
-                        Function.identity(),
                         new Search<>(Inventory::lookupProduct, Inventory::lookupProduct)
                 ),
                 searchProductsTextField,
@@ -394,7 +392,6 @@ public class MainFormController {
         public void changed(ObservableValue<? extends String> obs, String oldText, String newText) {
             var sl = new SearchableList<Product>(
                     Inventory.getAllProducts(),
-                    Function.identity(),
                     new Search<>(Inventory::lookupProduct, Inventory::lookupProduct)
             );
             var filtered = sl.getFiltered(newText);
