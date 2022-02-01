@@ -9,6 +9,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
 /**
+ * FUTURE ENHANCEMENT: none.
  *
  * @author Husnain Arif
  */
@@ -35,7 +36,7 @@ public class BoundablePropertyRatio implements ChangeListener<Number> {
         if (p.isBound()) {
             p.unbind();
         }
-        
+
         p.bind(base.multiply(d));
     }
 
