@@ -9,9 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * FUTURE ENHANCEMENT:
- * <p>
- * This class should use a DBMS implementation -- it uses instances of
+ * FUTURE ENHANCEMENT: This class should use a DBMS implementation -- it uses instances of
  * {@link ObservableList} instead.
  * <p>
  * Utility class that offers create, read, update, and delete (CRUD) routines on
