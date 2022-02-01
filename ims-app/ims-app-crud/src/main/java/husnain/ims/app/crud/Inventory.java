@@ -93,16 +93,21 @@ public class Inventory {
     }
 
     /**
-     * Searches the cache of {@code Part} objects for a {@code Part}
-     * instances whose names contain the specified {@link Part#name}.
+     * Searches the cache of {@code Part} objects for {@code Part} instances
+     * whose names contain the specified {@link Part#name}.
      * <p>
      * This method never returns {@code null}. If the search is unsuccessful, it
      * returns an empty {@link FXCollections#observableArrayList()} that's empty
      * instead.
      *
-     * @param partName
+     * @param partName a {@code String} value that will be checked to see if any
+     *                 of the {@code Part} objects in cache contain it as part
+     *                 of their names.
      *
-     * @return 
+     * @return An {@link ObservableList} that contains {@link Part} instances
+     *         with names containing the specified {@code String} value. Or, an
+     *         empty {@code ObservableList} if no {@code Part} instances in
+     *         cache contain the specified {@code String} value.
      */
     public static ObservableList<Part> lookupPart(String partName) {
         return allParts.stream()
@@ -110,16 +115,56 @@ public class Inventory {
                 .collect(Collectors.collectingAndThen(Collectors.toList(), FXCollections::observableArrayList));
     }
 
+    /**
+     * Searches the cache of {@code Product} objects for {@code Product}
+     * instances whose names contain the specified {@link Part#name}.
+     * <p>
+     * This method never returns {@code null}. If the search is unsuccessful, it
+     * returns an empty {@link FXCollections#observableArrayList()} that's empty
+     * instead.
+     *
+     * @param productName a {@code String} value that will be checked to see if
+     *                    any of the {@code Product} objects in cache contain it
+     *                    as part of their names.
+     *
+     * @return An {@link ObservableList} that contains {@link Product} instances
+     *         with names containing the specified {@code String} value. Or, an
+     *         empty {@code ObservableList} if no {@code Product} instances in cache
+     *         contain the specified {@code String} value.
+     */
     public static ObservableList<Product> lookupProduct(String productName) {
         return allProducts.stream()
                 .filter(product -> product.getName().toLowerCase().contains(productName.toLowerCase()))
                 .collect(Collectors.collectingAndThen(Collectors.toList(), FXCollections::observableArrayList));
     }
 
+    /**
+     * This method has the effect of updating a {@code Part} in a specified
+     * index in cache with the values from the supplied {@code Part} object.
+     * <p>
+     * Yet, to achieve this, it simply replaces the {@code Part} instance in
+     * cache with the supplied {@code Part} instance.
+     *
+     * @param index        the location of the {@code Part} instance in cache
+     *                     that seeks will be updated with new field values.
+     * @param selectedPart the {@code Part} object that will supply the
+     *                     specified cache index with an instance of itself.
+     */
     public static void updatePart(int index, Part selectedPart) {
         allParts.set(index, selectedPart);
     }
 
+    /**
+     * This method has the effect of updating a {@code Product} in a specified
+     * index in cache with the values from the supplied {@code Product} object.
+     * <p>
+     * Yet, to achieve this, it simply replaces the {@code Product} instance in
+     * cache with the supplied {@code Product} instance.
+     *
+     * @param index      the location of the {@code Part} instance in cache that
+     *                   will be updated with new field values.
+     * @param newProduct
+     */
     public static void updateProduct(int index, Product newProduct) {
         allProducts.set(index, newProduct);
     }
