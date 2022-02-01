@@ -4,12 +4,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * FUTURE ENHANCEMENT:
- * <p>
- * This class needs equality tests (that is, the implementation of
+ * FUTURE ENHANCEMENT: This class needs equality tests (that is, the
+ * implementation of
  * {@link Object#equals(java.lang.Object) equals} and
  * {@link Object#hashCode() hashCode}) so that it can be used in
- * {@link Collection} implementations that depend on equality tests for adding
+ * {@code Collection} implementations that depend on equality tests for adding
  * and removing elements.
  * <p>
  * This class represents a product that's managed by an inventory system.
