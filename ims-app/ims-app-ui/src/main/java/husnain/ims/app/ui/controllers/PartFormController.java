@@ -28,6 +28,9 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleGroup;
 
 /**
+ * FUTURE ENHANCEMENT: none.
+ * <p>
+ * FXML Controller class for the {@code PartForm.fxml} file.
  *
  * @author Husnain Arif
  */
@@ -83,11 +86,11 @@ public class PartFormController {
     @FXML
     private Label errorLabel;
 
-    public PartFormController() {
+    PartFormController() {
         this(Named.DialogType.ADD, null);
     }
 
-    public PartFormController(Part part) {
+    PartFormController(Part part) {
         this(Named.DialogType.MODIFY, Objects.requireNonNull(part, "Part to modify should not be null"));
     }
 
@@ -97,7 +100,7 @@ public class PartFormController {
         this.inputErrors = FXCollections.observableSet(new LinkedHashSet<>());
     }
 
-    public Part getPart() {
+    Part getPart() {
         Part modifiedPart;
         var name = nameTextField.getText();
         var price = Double.parseDouble(priceTextField.getText());
@@ -156,13 +159,13 @@ public class PartFormController {
         return modifiedPart;
     }
 
-    public Set<InputError> getInputErrors() {
+    Set<InputError> getInputErrors() {
         this.updateErrors();
 
         return Collections.unmodifiableSet(inputErrors);
     }
 
-    public void updateErrorText() {
+    void updateErrorText() {
         var ls = System.lineSeparator();
         var text = inputErrors.stream()
                 .map(InputError::toString)
