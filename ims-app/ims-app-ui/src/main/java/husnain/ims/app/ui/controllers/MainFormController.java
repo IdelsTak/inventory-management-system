@@ -14,11 +14,8 @@ import husnain.ims.app.ui.controllers.utils.SearchableList;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +29,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -375,40 +371,6 @@ public class MainFormController {
         });
 
         alert.show();
-    }
-
-    private class ChangeListenerImpl implements ChangeListener<String> {
-
-        private SearchableList<Product> sl;
-        private final TextInputControl searchControl;
-        private final TableView<Product> table;
-
-        public ChangeListenerImpl(TextInputControl searchControl, TableView<Product> table) {
-            this.searchControl = searchControl;
-            this.table = table;
-        }
-
-        @Override
-        public void changed(ObservableValue<? extends String> obs, String oldText, String newText) {
-            var sl = new SearchableList<Product>(
-                    Inventory.getAllProducts(),
-                    new Search<>(Inventory::lookupProduct, Inventory::lookupProduct)
-            );
-            var filtered = sl.getFiltered(newText);
-
-            if (filtered.isEmpty()) {
-                var alert = new Alert(Alert.AlertType.WARNING, null);
-
-                alert.setHeaderText("No product found for query \"%s\"".formatted(searchPartsTextField.getText()));
-                alert.show();
-
-                searchControl.setText(null);
-                table.requestFocus();
-            } else {
-                table.setItems(filtered);
-            }
-        }
-
     }
 
 }
