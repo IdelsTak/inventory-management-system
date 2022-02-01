@@ -16,6 +16,8 @@ public class Launcher {
 
     /**
      * The applications main method.
+     * <p>
+     * Find the aggregated JavaDocs in {@code /ims-app/javadoc}.
      *
      * @param args command line arguments.
      */
