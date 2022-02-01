@@ -2,10 +2,8 @@ package husnain.ims.app.ui;
 
 //import husnain.ims.app.sample.data.Generate;
 /**
- * FUTURE ENHANCEMENT:
- * <p>
- * This class shouldn't be used if the JavaFX modules are declared correctly as
- * VM options.
+ * FUTURE ENHANCEMENT: This class shouldn't be used if the JavaFX modules are
+ * declared correctly as VM options.
  * <p>
  * This class starts the application.
  * <p>
