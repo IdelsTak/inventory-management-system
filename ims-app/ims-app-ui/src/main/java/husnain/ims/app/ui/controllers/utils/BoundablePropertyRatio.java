@@ -15,23 +15,28 @@ import javafx.beans.value.ObservableValue;
 public class BoundablePropertyRatio implements ChangeListener<Number> {
 
     private final NumberExpressionBase base;
-    private final List<PropertyRatio> propRatios;
+    private final List<PropertyRatio> pRatios;
 
-    public BoundablePropertyRatio(NumberExpressionBase base, Collection<PropertyRatio> propRatios) {
+    public BoundablePropertyRatio(NumberExpressionBase base, Collection<PropertyRatio> pRatios) {
         this.base = base;
-        this.propRatios = new ArrayList<>(propRatios);
+        this.pRatios = new ArrayList<>(pRatios);
     }
 
     @Override
     public void changed(ObservableValue<? extends Number> obs, Number ov, Number nv) {
-        propRatios.forEach(propRatio -> this.bind(propRatio.property(), propRatio.ratio()));
+        pRatios.forEach(this::bind);
     }
 
-    private void bind(Property colProp, double ratio) {
-        if (colProp.isBound()) {
-            colProp.unbind();
+    private void bind(PropertyRatio pr) {
+        this.bind(pr.property(), pr.ratio());
+    }
+
+    private void bind(Property p, double d) {
+        if (p.isBound()) {
+            p.unbind();
         }
-        colProp.bind(base.multiply(ratio));
+        
+        p.bind(base.multiply(d));
     }
 
 }
