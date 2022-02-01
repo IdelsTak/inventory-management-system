@@ -15,20 +15,18 @@ import javafx.scene.input.KeyEvent;
 public class SearchListener<T> implements ChangeListener<String> {
 
     private final SearchableList<T> searchableList;
-    private final TextInputControl searchControl;
     private final Labeled resultsLabel;
     private final TableView<T> table;
 
     public SearchListener(SearchableList<T> searchableList, TextInputControl searchControl, Labeled resultsLabel, TableView<T> table) {
         this.searchableList = searchableList;
-        this.searchControl = searchControl;
         this.resultsLabel = resultsLabel;
         this.table = table;
-        
+        //Clear text when Esc key is pressed
         searchControl.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
                 searchControl.clear();
-    }
+            }
         });
         // Select all text when this editor is selected
         searchControl.setOnMousePressed(event -> searchControl.selectAll());
