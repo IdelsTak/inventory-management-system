@@ -3,6 +3,7 @@ package husnain.ims.app.ui.controllers.utils;
 import javafx.scene.control.Label;
 
 /**
+ * FUTURE ENHANCEMENT: none.
  *
  * @author Husnain Arif
  */
