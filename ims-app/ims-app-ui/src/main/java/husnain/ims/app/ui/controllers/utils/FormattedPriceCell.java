@@ -4,6 +4,7 @@ import java.util.Objects;
 import javafx.scene.control.TableCell;
 
 /**
+ * FUTURE ENHANCEMENT: none.
  *
  * @author Husnain Arif
  */
