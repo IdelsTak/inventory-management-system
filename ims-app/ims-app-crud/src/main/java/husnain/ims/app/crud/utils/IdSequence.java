@@ -3,11 +3,16 @@ package husnain.ims.app.crud.utils;
 import java.time.Instant;
 
 /**
+ * FUTURE ENHANCEMENT:
+ * <p>
+ * This class should be replaced with the primary key auto generation
+ * capabilities that come with DBMS implementations.
+ * <p>
  * Generates a sequence of {@code int} values, which can be used as primary
  * keys/ids, for instance.
  * <p>
- * Starts the generation at {@code 1} and continues to add {@code 1} to that value, ad
- * infinitum, when its method {@link #next()} is called.
+ * Starts the generation at {@code 1} and continues to add {@code 1} to that
+ * value, ad infinitum, when its method {@link #next()} is called.
  *
  * @author Husnain Arif
  */
