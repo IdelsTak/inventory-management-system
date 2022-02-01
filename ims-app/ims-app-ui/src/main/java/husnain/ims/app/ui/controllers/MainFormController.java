@@ -75,7 +75,7 @@ public class MainFormController {
      * Initializes the controller class.
      */
     @FXML
-    public void initialize() {
+    void initialize() {
         this.initTablePlaceholders();
         this.setupColumnWidths();
         this.initFocus();
