@@ -21,7 +21,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -41,7 +40,9 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
- * FXML Controller class
+ * FUTURE ENHANCEMENT: none.
+ * <p>
+ * FXML Controller class for the {@code ProductForm.fxml} file.
  *
  * @author Husnain Arif
  */
@@ -110,11 +111,11 @@ public class ProductFormController {
     @FXML
     private TableColumn<Part, Double> assocPriceColumn;
 
-    public ProductFormController() {
+    ProductFormController() {
         this(Named.DialogType.ADD, null);
     }
 
-    public ProductFormController(Product product) {
+    ProductFormController(Product product) {
         this(Named.DialogType.MODIFY, Objects.requireNonNull(product, "Product to modify should not be null"));
     }
 
@@ -125,7 +126,7 @@ public class ProductFormController {
         this.associatedParts = FXCollections.observableArrayList();
     }
 
-    public Product getProduct() {
+    Product getProduct() {
         Product modifiedProduct;
         var name = nameTextField.getText();
         var price = Double.parseDouble(priceTextField.getText());
@@ -155,13 +156,13 @@ public class ProductFormController {
         return modifiedProduct;
     }
 
-    public Set<InputError> getInputErrors() {
+    Set<InputError> getInputErrors() {
         this.updateErrors();
 
         return Collections.unmodifiableSet(inputErrors);
     }
 
-    public void updateErrorText() {
+    void updateErrorText() {
         var ls = System.lineSeparator();
         var text = inputErrors.stream()
                 .map(InputError::toString)
