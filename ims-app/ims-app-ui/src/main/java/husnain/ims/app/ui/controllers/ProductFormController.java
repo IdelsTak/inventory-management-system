@@ -192,7 +192,6 @@ public class ProductFormController {
         searchPartsTextField.textProperty().addListener(new SearchListener<>(
                 new SearchableList<>(
                         Inventory.getAllParts(),
-                        Function.identity(),
                         new Search<>(Inventory::lookupPart, Inventory::lookupPart)
                 ),
                 searchPartsTextField,
