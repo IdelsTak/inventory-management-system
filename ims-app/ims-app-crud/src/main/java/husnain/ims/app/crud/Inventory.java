@@ -9,11 +9,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
+ * FUTURE ENHANCEMENT:
+ * <p>
+ * This class should use a DBMS implementation -- it uses instances of
+ * {@link ObservableList} instead.
+ * <p>
  * Utility class that offers create, read, update, and delete (CRUD) routines on
  * {@link Part} and {@link Product} caches.
- * <p>
- * The class doesn't use any DBMS implementations. It uses instances of
- * {@link ObservableList} instead.
  *
  * @author Husnain Arif
  */
@@ -173,22 +175,42 @@ public class Inventory {
     /**
      * Removes the specified {@code Part} from cache.
      *
-     * @param selectedPart
+     * @param selectedPart the {@code Part} to be removed from cache
      *
-     * @return
+     * @return {@code true} if the cache contained the specified {@code Part}.
      */
     public static boolean deletePart(Part selectedPart) {
         return allParts.remove(selectedPart);
     }
 
+    /**
+     * Removes the specified {@code Product} from cache.
+     *
+     * @param selectedProduct the {@code Product} to be removed from cache
+     *
+     * @return {@code true} if the cache contained the specified
+     *         {@code Product}.
+     */
     public static boolean deleteProduct(Product selectedProduct) {
         return allProducts.remove(selectedProduct);
     }
 
+    /**
+     * Gives access to the cache of {@code Part} instances that's in the form of
+     * an {@link ObservableList}.
+     *
+     * @return the {@link ObservableList} that contains {@code Part} instances.
+     */
     public static ObservableList<Part> getAllParts() {
         return allParts;
     }
 
+    /**
+     * Gives access to the cache of {@code Part} instances that's in the form of
+     * an {@link ObservableList}.
+     *
+     * @return the {@link ObservableList} that contains {@code Part} instances.
+     */
     public static ObservableList<Product> getAllProducts() {
         return allProducts;
     }
