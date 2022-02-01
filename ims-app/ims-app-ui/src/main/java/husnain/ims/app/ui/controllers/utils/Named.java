@@ -10,6 +10,9 @@ public interface Named {
     @Override
     public String toString();
 
+    /**
+     * FUTURE ENHANCEMENT: none.
+     */
     public enum DialogType implements Named {
         ADD("Add"), MODIFY("Modify");
         private final String typeName;
