@@ -24,6 +24,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -33,7 +34,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
+ * FUTURE ENHANCEMENT: none.
+ * <p>
+ * FXML Controller class for the {@code MainForm.fxml} file.
  *
  * @author Husnain Arif
  */
@@ -72,7 +75,8 @@ public class MainFormController {
     private TableColumn<Product, Double> productPriceColumn;
 
     /**
-     * Initializes the controller class.
+     * Called to initialize a controller after its root element has been
+     * completely processed.
      */
     @FXML
     void initialize() {
@@ -122,6 +126,11 @@ public class MainFormController {
 
     }
 
+    /**
+     * Shows a {@link Dialog} that could possibly create a new {@link Part}
+     *
+     * @param event the event caused by the pressing of the {@code Add} button.
+     */
     @FXML
     void addPart(ActionEvent event) {
         try {
@@ -133,6 +142,12 @@ public class MainFormController {
         event.consume();
     }
 
+    /**
+     * Shows a {@link Dialog} that could possibly modify a selected {@link Part}
+     *
+     * @param event the event caused by the pressing of the {@code Modify}
+     *              button.
+     */
     @FXML
     void modifyPart(ActionEvent event) {
         var selectedPart = partsTable.getSelectionModel().getSelectedItem();
@@ -153,6 +168,12 @@ public class MainFormController {
         event.consume();
     }
 
+    /**
+     * Shows a {@link Dialog} that could possibly delete a selected {@link Part}
+     *
+     * @param event the event caused by the pressing of the {@code Delete}
+     *              button.
+     */
     @FXML
     void deletePart(ActionEvent event) {
         var selectedPart = partsTable.getSelectionModel().getSelectedItem();
@@ -179,6 +200,11 @@ public class MainFormController {
         event.consume();
     }
 
+    /**
+     * Shows a {@link Dialog} that could possibly create a new {@link Product}
+     *
+     * @param event the event caused by the pressing of the {@code Add} button.
+     */
     @FXML
     void addProduct(ActionEvent event) {
         try {
@@ -190,6 +216,13 @@ public class MainFormController {
         event.consume();
     }
 
+    /**
+     * Shows a {@link Dialog} that could possibly modify a selected
+     * {@link Product}
+     *
+     * @param event the event caused by the pressing of the {@code Modify}
+     *              button.
+     */
     @FXML
     void modifyProduct(ActionEvent event) {
         var selectedProduct = productsTable.getSelectionModel().getSelectedItem();
@@ -210,6 +243,13 @@ public class MainFormController {
         event.consume();
     }
 
+    /**
+     * Shows a {@link Dialog} that could possibly delete a selected
+     * {@link Product}
+     *
+     * @param event the event caused by the pressing of the {@code Delete}
+     *              button.
+     */
     @FXML
     void deleteProduct(ActionEvent event) {
         var selectedProduct = productsTable.getSelectionModel().getSelectedItem();
@@ -245,6 +285,12 @@ public class MainFormController {
         event.consume();
     }
 
+    /**
+     * Shows a {@link Dialog} that could possibly delete a selected exit the
+     * application
+     *
+     * @param event the event caused by the pressing of the {@code Exit} button.
+     */
     @FXML
     void exitApplication(ActionEvent event) {
         this.showExitDialog(event);
