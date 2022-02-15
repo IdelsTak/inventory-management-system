@@ -3,7 +3,7 @@
 
 ## UML class diagram
 
-![uml class diagram](https://github.com/IdelsTak/inventory-management-system/blob/master/UML%20Class%20Diagram.png)
+![uml class diagram](UML Class Diagram.png)
 
 ## User interface
 
@@ -11,7 +11,7 @@
 
 The Main form contains a Parts pane and a Products pane with TableViews of parts and products; a search field; buttons to add, modify, and delete parts and products; and an Exit button.
 
-![main form](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/main-form-screenshot_2022-01-24_17-11-37.png)
+![main form](screenshots/main-form-screenshot_2022-01-24_17-11-37.png)
 
 ### Add part form
 
@@ -31,11 +31,11 @@ The values of the filed Inv, therefore, must be integers between the values stor
 
 #### In-house
 
-![add part form—in-house](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/inhouse-add-part-form-screenshot_2022-01-24_17-12-29.png)
+![add part form—in-house](screenshots/inhouse-add-part-form-screenshot_2022-01-24_17-12-29.png)
 
 #### Outsourced
 
-![add part form—outsourced](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/outsourced-add-part-form-screenshot_2022-01-24_17-13-05.png)
+![add part form—outsourced](screenshots/outsourced-add-part-form-screenshot_2022-01-24_17-13-05.png)
 
 ### Modify part form
 
@@ -53,20 +53,20 @@ The ID field is still disabled but now displays the selected part’s ID.
 
 #### In-house
 
-![modify part form—in-house](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/inhouse-modify-part-form-screenshot_2022-01-24_17-13-42.png)
+![modify part form—in-house](screenshots/inhouse-modify-part-form-screenshot_2022-01-24_17-13-42.png)
 
 #### Outsourced
 
-![modify part form—outsourced](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/outsourced-modify-part-form-screenshot_2022-01-24_17-14-08.png)
+![modify part form—outsourced](screenshots/outsourced-modify-part-form-screenshot_2022-01-24_17-14-08.png)
 
 ### Add product form
 
 Product form contains product information, a top TableView containing all the part data to choose from, and a bottom TableView with the associated part data.
 
-![add product form](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/add-product-form-screenshot_2022-01-24_17-14-42.png)
+![add product form](screenshots/add-product-form-screenshot_2022-01-24_17-14-42.png)
 
 ### Modify product form
 
 Modify Product form has the same functionality as the Add Product form, but the parts and fields are populated with data that was previously entered and saved.
 
-![modify product form](https://github.com/IdelsTak/inventory-management-system/blob/master/screenshots/modify-product-form-screenshot_2022-01-24_17-15-05.png)
+![modify product form](screenshots/modify-product-form-screenshot_2022-01-24_17-15-05.png)
