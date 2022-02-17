@@ -3,7 +3,7 @@
 
 ## UML class diagram
 
-![uml class diagram](screenshots/UML Class Diagram.png)
+![uml class diagram](screenshots/UML-Class-Diagram.png)
 
 ## User interface
 
