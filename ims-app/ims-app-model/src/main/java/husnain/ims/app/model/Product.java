@@ -13,7 +13,7 @@ import javafx.collections.ObservableList;
  * <p>
  * This class represents a product that's managed by an inventory system.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class Product {
 

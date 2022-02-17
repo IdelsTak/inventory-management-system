@@ -44,7 +44,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
  * <p>
  * FXML Controller class for the {@code ProductForm.fxml} file.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class ProductFormController {
 

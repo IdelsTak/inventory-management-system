@@ -38,7 +38,7 @@ import javafx.stage.Stage;
  * <p>
  * FXML Controller class for the {@code MainForm.fxml} file.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class MainFormController {
 

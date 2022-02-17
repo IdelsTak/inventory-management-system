@@ -10,7 +10,7 @@ package husnain.ims.app.ui;
  * It also contains a commented out line that could be used to generate test
  * data for the application.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class Launcher {
 

@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 /**
  * FUTURE ENHANCEMENT: none.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class SearchableList<T> {
 

@@ -3,7 +3,7 @@ package husnain.ims.app.model;
 /**
  * Supplied class Part.java
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public abstract class Part {
 

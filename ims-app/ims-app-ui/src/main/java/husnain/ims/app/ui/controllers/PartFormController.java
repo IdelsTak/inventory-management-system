@@ -32,7 +32,7 @@ import javafx.scene.control.ToggleGroup;
  * <p>
  * FXML Controller class for the {@code PartForm.fxml} file.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class PartFormController {
 

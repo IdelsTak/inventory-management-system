@@ -12,7 +12,7 @@ import javafx.collections.ObservableList;
 /**
  * FUTURE ENHANCEMENT: none.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class Search<T> implements Function<String, ObservableList<T>> {
 

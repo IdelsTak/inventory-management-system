@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 /**
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class Generate {
 

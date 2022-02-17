@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 /**
  * FUTURE ENHANCEMENT: none.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class PlaceholderLabel extends Label {
 

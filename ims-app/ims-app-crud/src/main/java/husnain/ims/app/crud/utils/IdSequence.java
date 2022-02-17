@@ -12,7 +12,7 @@ import java.time.Instant;
  * Starts the generation at {@code 1} and continues to add {@code 1} to that
  * value, ad infinitum, when its method {@link #next()} is called.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class IdSequence {
 

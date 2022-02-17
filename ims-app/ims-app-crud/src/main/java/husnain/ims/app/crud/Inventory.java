@@ -15,7 +15,7 @@ import javafx.collections.ObservableList;
  * Utility class that offers create, read, update, and delete (CRUD) routines on
  * {@link Part} and {@link Product} caches.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class Inventory {
 

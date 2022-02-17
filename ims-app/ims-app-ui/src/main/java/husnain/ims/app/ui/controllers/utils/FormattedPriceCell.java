@@ -6,7 +6,7 @@ import javafx.scene.control.TableCell;
 /**
  * FUTURE ENHANCEMENT: none.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class FormattedPriceCell<T> extends TableCell<T, Double> {
 

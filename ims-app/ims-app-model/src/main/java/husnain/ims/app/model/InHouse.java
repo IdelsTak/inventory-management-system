@@ -10,7 +10,7 @@ package husnain.ims.app.model;
  * <p>
  * This class represents a product part that's manufactured on site.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class InHouse extends Part {
 

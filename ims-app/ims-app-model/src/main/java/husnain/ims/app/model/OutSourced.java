@@ -10,7 +10,7 @@ package husnain.ims.app.model;
  * <p>
  * This class represents a product part that's outsourced from other companies.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class OutSourced extends Part {
 

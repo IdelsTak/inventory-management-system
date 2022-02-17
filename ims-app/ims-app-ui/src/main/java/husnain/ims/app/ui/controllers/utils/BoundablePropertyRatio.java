@@ -11,7 +11,7 @@ import javafx.beans.value.ObservableValue;
 /**
  * FUTURE ENHANCEMENT: none.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public class BoundablePropertyRatio implements ChangeListener<Number> {
 

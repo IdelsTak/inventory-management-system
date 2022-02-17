@@ -5,7 +5,7 @@ import javafx.beans.property.Property;
 /**
  * FUTURE ENHANCEMENT: none.
  *
- * @author Husnain Arif
+ * @author Hiram K.
  */
 public record PropertyRatio<T extends Number>(Property<T> property, Double ratio) {
 
